@@ -1,0 +1,37 @@
+{
+  "name": "qucik-switch",
+  "version": "0.0.4",
+  "description": "a tool for quick (switch)start ",
+  "main": "index.js",
+  "bin": {
+    "qs": "bin/qs-cli.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node",
+    "tool",
+    "quick"
+  ],
+  "author": "advence-liz",
+  "license": "ISC",
+  "repository": "git@github.com:advence-liz/quick-switch/.git",
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "debug": "^3.1.0",
+    "fs-extra": "^7.0.0",
+    "glob": "^7.1.2",
+    "inquirer": "^6.1.0",
+    "shelljs": "^0.8.2",
+    "yargs": "^12.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^5.3.0",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-promise": "^3.8.0",
+    "eslint-plugin-standard": "^3.1.0"
+  }
+}
