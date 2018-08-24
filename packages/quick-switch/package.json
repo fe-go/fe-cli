@@ -1,6 +1,6 @@
 {
-  "name": "qucik-switch",
-  "version": "0.0.4",
+  "name": "quickly-switch",
+  "version": "0.0.0",
   "description": "a tool for quick (switch)start ",
   "main": "index.js",
   "bin": {
