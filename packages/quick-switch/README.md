@@ -23,7 +23,7 @@ $ qs --new=nav // 根据_demo 生成 nav
 - `root` 模板的根目录默认值为`src` (等同上文中的`components`)
 - `defaultDemo` 默认模板默认值为 `_demo`（等同上文中`_demo`）
 - `moduleStorePath` 当前选择的模块的存储路径默认值为 `./node_modules/.qsrc.json`
-- `rename` 是否创建新模块的时候是时将新模块内的文件名字全部改为模块名
+- `rename` 是否创建新模块的时候是时将新模块内的文件名字全部改为模块名,默认为`false`
 
 ```bash
 以_demo 为模板生成nav 并且将文件名字全部改为nav

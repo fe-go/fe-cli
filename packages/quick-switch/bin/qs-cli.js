@@ -7,6 +7,7 @@ const shell = require('shelljs')
 const inquirer = require('inquirer')
 const getConfig = require('../lib/get-config')
 const renameFiles = require('../lib/rename-files')
+const attempt = require('../lib/attempt')
 const debug = require('debug')('qs')
 const { ConfigOutputPath, ModuleStorePath } = require('../qs.config')
 let options = getConfig()
@@ -22,12 +23,12 @@ function main (options) {
   } else if (options.delete) {
     deleteModule(options.delete)
   } else if (options.list) {
-    printModule()
+    attempt(printModule, options)
   } else if (options.init) {
     init()
   } else {
     console.info(blue('help: qs --help'))
-    printModule()
+    attempt(printModule, options)
   }
 }
 
@@ -60,7 +61,7 @@ function init () {
     {
       type: 'confirm',
       name: 'rename',
-      message: 'Create new module will reanme,Is this OK?(No)',
+      message: 'Create new module will reanme files,Is this OK?(default No)',
       default: false
     }
   ]
@@ -73,7 +74,7 @@ function init () {
     fs.outputJsonSync(moduleStorePath, { module: defaultDemo })
   })
 }
-function printModule () {
+function printModule (options) {
   const { currentModule, root } = options
   const allModules = fs.readdirSync(root)
   allModules.forEach(item => {
@@ -154,7 +155,7 @@ const args = yargs.options({
   switch: {
     alias: 's',
     describe:
-      'qs --switch=<name> 将当前模块切换为<name>,如果<name> 不存在则以当前模块伟模板创建新模块',
+      'qs --switch=<name> 将当前模块切换为<name>,如果<name> 不存在则以当前模块为模板创建新模块',
     type: 'string',
     conflicts: ['new', 'delete']
   },
