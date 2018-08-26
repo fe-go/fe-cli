@@ -1,18 +1,21 @@
 const fs = require('fs-extra')
 const path = require('path')
 const { red, blue } = require('chalk')
-const {ConfigOutputPath} = require('../qs.config')
+const args = require('yargs').argv
+const { ConfigOutputPath } = require('../qs.config')
 
 function getConfig () {
   let config, currentModule
+  // console.log(args)
+  if (args.init) return
   if (fs.pathExistsSync(path.resolve(process.cwd(), ConfigOutputPath))) {
     config = fs.readJsonSync(path.resolve(process.cwd(), ConfigOutputPath))
     const { moduleStorePath, defaultDemo } = config
     currentModule = getCurrentModule(moduleStorePath, defaultDemo)
     return { ...config, currentModule }
   } else {
-    console.info(red(`can not found ${ConfigOutputPath}`))
-    console.info(blue('use: qs --init'))
+    console.info(red(`Can't found ${ConfigOutputPath} in PWD`))
+    console.info(blue('Please use: qs --init'))
     process.exit(0)
   }
 }
