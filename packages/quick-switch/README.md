@@ -1,6 +1,6 @@
 # qs
 
-一个命令行工具方便快速的根据已有模板生成新的项目,推荐在 github 查看说明
+一个`NODE命令行工具`方便快速的根据已有模板快速生成新的项目,推荐在 github 查看说明
 
 - [github](https://github.com/advence-liz/quick-switch)
 - [npm](https://www.npmjs.com/package/quickly-switch)
@@ -11,12 +11,14 @@ $ qs --new=nav // 根据_demo 生成 nav
 ---
 - componets
   + _demo
+   - index.js
   + button
   + row
 
   + nav
-
+   - index.js
 ---
+如果模板为微信小程序形式参考下面的 `reanme` 配置
 ```
 
 ## install
@@ -59,7 +61,7 @@ nav
 // qs 命令会记录当前切换到那个模块下，那记录这个有什么用呢，举个例子
 // 比如我们一个工程有多个模块，每个模块单独打包,这样就可以通过读取`.qsrc.json`获取当前模块动态打包
 // 也可以本地安装通过getConfig方法直接获取当前模块
-const { getConfig } = require("qucik-switch")
+const { getConfig } = require("quickly-switch")
 const { currentModule } = getConfig()
 module.exports = {
   entry: path.join(__dirname, "src", currentModule),
@@ -73,6 +75,23 @@ module.exports = {
 ```
 
 ![](img/qsnew.gif)
+
+## local install 
+
+目前  本地安装 `quickly-switch` 只导出一个方法 `getConfig`,之后准备添加一些其他工具方法
+
+```js
+const { getConfig } = require("quickly-switch")
+const qsConfig = getConfig()
+// 目前getConfig 的返回值为一个对象形式如下
+{
+  "root": "src",
+  "defaultDemo": "_demo",
+  "moduleStorePath": "./node_modules/.qsrc.json",
+  "rename": false,
+  "currentModule": "_demo"
+}
+```
 
 ## debug
 
