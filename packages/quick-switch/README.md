@@ -38,9 +38,11 @@ nav
  nav.XXXX
 ```
 
+![](img/qsinit.gif)
+
 ## 命令介绍
 
-- `qs --help` 自行查看命令描述
+- `qs -h` 自行查看命令描述
 - `qs --new=<name>` 根据默认模板创建新的项目
 - `qs --switch=<name>` 将当前模块切换到对应名称的模块下,如果模块不存在则以当前模块为模板创建新的模块
 
@@ -60,6 +62,8 @@ module.exports = {
   }
 }
 ```
+
+![](img/qsnew.gif)
 
 ## debug
 
