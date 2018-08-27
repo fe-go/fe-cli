@@ -1,6 +1,9 @@
 # qs
 
-一个工具方便快速的根据已有模板生成新的项目
+一个命令行工具方便快速的根据已有模板生成新的项目,推荐在 github 查看说明
+
+- [github](https://github.com/advence-liz/quick-switch)
+- [npm](https://www.npmjs.com/package/quickly-switch)
 
 ```bash
 比如有如下目录结构，每个组件的处除了父目录的名字其他的文件结构都是一样的,这样就可以根据 qs 命令快速的创建新的组件
@@ -14,6 +17,12 @@ $ qs --new=nav // 根据_demo 生成 nav
   + nav
 
 ---
+```
+
+## install
+
+```bash
+$ npm install quickly-switch -g
 ```
 
 ## 起步 `qs --init`
