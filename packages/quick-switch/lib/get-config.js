@@ -2,19 +2,32 @@ const fs = require('fs-extra')
 const path = require('path')
 const { red, blue } = require('chalk')
 const args = require('yargs').argv
+const findup = require('findup-sync')
 const { ConfigOutputPath } = require('../qs.config')
 
 function getConfig () {
-  let config, currentModule
-  // console.log(args)
+  /**
+   * @var {planObject} config qs --init 命令生成的配置
+   * @var {string} currentModule 当前选中模块
+   * @var {string} qsrcPath qs --init 生成的 .qsrc.json  的 absolute path
+   * @var {string} rootDir .qsrc.json 所在目录一般也就是项目根目录
+   */
+  let config, currentModule, qsrcPath, rootDir
+  // init 模式直接返回
   if (args.init) return
-  if (fs.pathExistsSync(path.resolve(process.cwd(), ConfigOutputPath))) {
-    config = fs.readJsonSync(path.resolve(process.cwd(), ConfigOutputPath))
-    const { moduleStorePath, defaultDemo } = config
+
+  qsrcPath = findup(ConfigOutputPath)
+
+  if (fs.pathExistsSync(qsrcPath)) {
+    rootDir = path.dirname(qsrcPath)
+    config = fs.readJsonSync(qsrcPath)
+    let { moduleStorePath, defaultDemo, root } = config
+    root = path.join(rootDir, root)
+    moduleStorePath = path.join(rootDir, moduleStorePath)
     currentModule = getCurrentModule(moduleStorePath, defaultDemo)
-    return { ...config, currentModule }
+    return { defaultDemo, qsrcPath, moduleStorePath, root, currentModule }
   } else {
-    console.info(red(`Can't found ${ConfigOutputPath} in PWD`))
+    console.info(red(`Can't found ${ConfigOutputPath}`))
     console.info(blue('Please use: qs --init'))
     process.exit(0)
   }

@@ -113,8 +113,7 @@ function rewriteModule (nextModule) {
 }
 function createModule (sourceModule, targetModule) {
   const { root, rename } = options
-  console.log(root)
-  console.log(path.join(root, sourceModule))
+
   if (!fs.pathExistsSync(path.join(root, sourceModule))) {
     console.info(red(`${sourceModule} directory not found`))
     process.exit(0)
