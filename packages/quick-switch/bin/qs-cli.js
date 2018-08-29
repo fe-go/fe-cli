@@ -3,7 +3,6 @@ const path = require('path')
 const fs = require('fs-extra')
 const yargs = require('yargs')
 const { red, blue, green } = require('chalk')
-const shell = require('shelljs')
 const inquirer = require('inquirer')
 const getConfig = require('../lib/get-config')
 const renameFiles = require('../lib/rename-files')
@@ -139,7 +138,8 @@ function deleteModule (targetModule) {
     console.info(red('The demo directory should not be removed!'))
     return
   }
-  shell.rm('-rf', path.join(root, targetModule))
+  fs.removeSync(path.join(root, targetModule))
+
   console.info(green(`${targetModule} successfully deleted`))
 }
 const args = yargs
