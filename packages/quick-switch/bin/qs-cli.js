@@ -133,7 +133,7 @@ function createModule (sourceModule, targetModule) {
   console.info(green(`create ${targetModule} from ${sourceModule}`))
 }
 function deleteModule (targetModule) {
-  const { root, defaultDemo } = options
+  const { root, defaultDemo, currentModule } = options
   if (targetModule === defaultDemo) {
     console.info(red('The demo directory should not be removed!'))
     return
@@ -141,6 +141,10 @@ function deleteModule (targetModule) {
   fs.removeSync(path.join(root, targetModule))
 
   console.info(green(`${targetModule} successfully deleted`))
+  if (targetModule === currentModule) {
+    console.info(blue('currentModule is deleted so change currentModule to default'))
+    rewriteModule(defaultDemo)
+  }
 }
 const args = yargs
   .usage('Usage: $0 [options]')

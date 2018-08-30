@@ -1,6 +1,6 @@
 # qs
 
-一个`NODE命令行工具`方便快速的根据已有模板快速生成新的项目,推荐在 github 查看说明
+一个`NODE命令行工具`方便快速的根据已有模板快速生成新的项目,推荐在 github 中查看说明
 
 - [github](https://github.com/advence-liz/quick-switch)
 - [npm](https://www.npmjs.com/package/quickly-switch)
@@ -37,7 +37,9 @@ $ npm install quickly-switch -g
 - `rename` 是否创建新模块的时候是时将新模块内的文件名字全部改为模块名,默认为`false`
 
 ```bash
-以_demo 为模板生成nav 并且将文件名字全部改为nav
+当rename 为true时
+$ qs --new=nav
+会以_demo 为模板生成nav 并且将文件名字全部改为nav
 _demo
  _demo.xx
  _demo.xxx
