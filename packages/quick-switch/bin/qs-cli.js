@@ -9,7 +9,7 @@ const renameFiles = require('../lib/rename-files')
 const attempt = require('../lib/attempt')
 const debug = require('debug')('qs')
 const { ConfigOutputPath, ModuleStorePath } = require('../qs.config')
-let options = getConfig()
+
 function main (options) {
   debug('options')
   debug(options)
@@ -124,9 +124,10 @@ function createModule (sourceModule, targetModule) {
     process.exit(0)
   }
 
-  // shell.exec(
-  //   `cp -r ${path.join(root, sourceModule)} ${path.join(root, targetModule)}`
-  // )
+  debug('new')
+  debug(path.join(root, sourceModule))
+  debug(path.join(root, targetModule))
+
   fs.copySync(path.join(root, sourceModule), path.join(root, targetModule))
   debug('reanme', rename)
   rename && renameFiles(path.join(root, targetModule), targetModule)
@@ -142,7 +143,9 @@ function deleteModule (targetModule) {
 
   console.info(green(`${targetModule} successfully deleted`))
   if (targetModule === currentModule) {
-    console.info(blue('currentModule is deleted so change currentModule to default'))
+    console.info(
+      blue('currentModule is deleted so change currentModule to default')
+    )
     rewriteModule(defaultDemo)
   }
 }
@@ -168,6 +171,12 @@ const args = yargs
       type: 'string',
       conflicts: ['new', 'switch']
     },
+    root: {
+      alias: 'r',
+      describe: 'root',
+      type: 'string',
+      conflicts: ['init']
+    },
     list: {
       alias: 'l',
       describe: '列出所有模块',
@@ -186,6 +195,7 @@ const args = yargs
   })
   .help()
   .alias(['h', 'help'], 'help').argv
-options = { ...options, ...args }
+
+const options = getConfig(args)
 
 main(options)

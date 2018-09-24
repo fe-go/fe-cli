@@ -4,8 +4,9 @@ const { red, blue } = require('chalk')
 const args = require('yargs').argv
 const findup = require('findup-sync')
 const { ConfigOutputPath } = require('../qs.config')
+const debug = require('debug')('qs')
 
-function getConfig () {
+function getConfig (options) {
   /**
    * @var {planObject} config qs --init 命令生成的配置
    * @var {string} currentModule 当前选中模块
@@ -21,11 +22,22 @@ function getConfig () {
   if (fs.pathExistsSync(qsrcPath)) {
     rootDir = path.dirname(qsrcPath)
     config = fs.readJsonSync(qsrcPath)
-    let { moduleStorePath, defaultDemo, root } = config
+    let { moduleStorePath, defaultDemo, root: configRoot } = config
+    let { root: cmdRoot } = options
+    let root = cmdRoot || configRoot
+    debug('root')
+    debug(root)
     root = path.join(rootDir, root)
     moduleStorePath = path.join(rootDir, moduleStorePath)
     currentModule = getCurrentModule(moduleStorePath, defaultDemo)
-    return { defaultDemo, qsrcPath, moduleStorePath, root, currentModule }
+    return {
+      ...options,
+      defaultDemo,
+      qsrcPath,
+      moduleStorePath,
+      root,
+      currentModule
+    }
   } else {
     console.info(red(`Can't found ${ConfigOutputPath}`))
     console.info(blue('Please use: qs --init'))
