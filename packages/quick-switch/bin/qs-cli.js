@@ -8,7 +8,7 @@ const getConfig = require('../lib/get-config')
 const renameFiles = require('../lib/rename-files')
 const attempt = require('../lib/attempt')
 const debug = require('debug')('qs')
-const { ConfigOutputPath, ModuleStorePath } = require('../qs.config')
+const { ConfigOutputPath } = require('../qs.config')
 
 function main (options) {
   debug('options')
@@ -25,10 +25,10 @@ function main (options) {
     attempt(printModule, options)
   } else if (options.init) {
     init()
-  } else if (options.reset) {
-    resetRoot()
   } else {
-    console.info(blue('help: qs -h'))
+    // const { root } = options
+    // console.info(green('root:'), blue(root))
+    console.info(green('❤️ For more info use help:'), blue('qs -h'))
     attempt(printModule, options)
   }
 }
@@ -52,14 +52,6 @@ function init () {
       }
     },
     {
-      type: 'input',
-      name: 'moduleStorePath',
-      message: "What's your moduleStorePath",
-      default: function () {
-        return ModuleStorePath
-      }
-    },
-    {
       type: 'confirm',
       name: 'rename',
       message: 'Create new module will reanme files,Is this OK?(default No)',
@@ -68,24 +60,18 @@ function init () {
   ]
 
   inquirer.prompt(questions).then(answers => {
-    const { moduleStorePath, defaultDemo } = answers
+    // const { moduleStorePath, defaultDemo } = answers
 
     console.info(JSON.stringify(answers, null, '  '))
+
     fs.outputJSONSync(ConfigOutputPath, answers)
-    fs.outputJsonSync(moduleStorePath, { module: defaultDemo })
   })
 }
-function resetRoot () {
-  const { qsrcPath, relativeRoot } = options
-  let config = fs.readJsonSync(qsrcPath)
-  config.root = relativeRoot
-  console.log(config)
-  fs.writeJsonSync(qsrcPath, config)
-}
+
 function printModule (options) {
   const { currentModule, root } = options
   const allModules = fs.readdirSync(root)
-  console.info(green(root))
+
   allModules.forEach(item => {
     let isFile = /\./g.test(item)
     if (item === currentModule) {
@@ -115,7 +101,7 @@ function switchModule (currentModule, nextModule) {
 }
 function rewriteModule (nextModule) {
   const { moduleStorePath } = options
-  fs.writeJson(moduleStorePath, { module: nextModule })
+  fs.outputJsonSync(moduleStorePath, { module: nextModule })
   console.info(
     green(`Successfully written ${nextModule} to ${moduleStorePath}`)
   )
