@@ -62,7 +62,7 @@ function init () {
   inquirer.prompt(questions).then(answers => {
     // const { moduleStorePath, defaultDemo } = answers
 
-    console.info(JSON.stringify(answers, null, '  '))
+    console.info(blue(JSON.stringify(answers, null, ' ')))
 
     fs.outputJSONSync(ConfigOutputPath, answers)
   })

@@ -3,16 +3,11 @@ const path = require('path')
 const { red, blue, green } = require('chalk')
 const args = require('yargs').argv
 const findup = require('findup-sync')
-const { ConfigOutputPath } = require('../qs.config')
+const { ConfigOutputPath, ModuleStorePath } = require('../qs.config')
 const debug = require('debug')('qs')
-// 如果向父级遍历找不到 qsrc 就认为当前为root
-const isRoot = !findup(ConfigOutputPath, { cwd: '..' })
-const isInit = args.init
-const rootDir = isRoot
-  ? process.cwd()
-  : path.parse(findup(ConfigOutputPath, { cwd: '..' })).dir
+
 /**
- * 将命令行参数和默认的配置参数结合
+ * 将命令行参数和默认的配置参数结合 命令行优先级 > 子目录配置 > 根目录配置
  * @param {planObject} options 传入的命令行参数
  * @returns {planObject} options 返回组合后的参数
  * @example
@@ -25,7 +20,14 @@ function getConfig (options = {}) {
    * @var {string} qsrcPath qs --init 生成的 .qsrc.json  的 absolute path
    * @var {string} rootDir .qsrc.json 所在目录一般也就是项目根目录
    */
+  // 如果向父级遍历找不到 qsrc 就认为当前为root(root 只向上查找一级)
+  const isRoot = !findup(ConfigOutputPath, { cwd: '..' })
+  const isInit = args.init
+  const rootDir = isRoot
+    ? process.cwd()
+    : path.parse(findup(ConfigOutputPath, { cwd: '..' })).dir
   let config, currentModule, qsrcPath
+  console.log(isRoot, isInit, rootDir)
   // init 模式直接返回
   if (isInit) {
     return options
@@ -33,30 +35,29 @@ function getConfig (options = {}) {
   // 获取离当前目录最近的 qsrc 目前子目录可以个性化 root,rename 配置
   if ((qsrcPath = findup(ConfigOutputPath))) {
     config = fs.readJsonSync(qsrcPath)
-    let { moduleStorePath, defaultDemo, root: configRoot } = config
+    let { defaultDemo, root: configRoot } = config
     let { root: cmdRoot } = options
     let relativeRoot = cmdRoot || configRoot
-
-    moduleStorePath = path.join(
+    // moduleStorePath 动态根据工作目录或者命令输入确定
+    let moduleStorePath = path.join(
       rootDir,
-      moduleStorePath,
+      ModuleStorePath,
       relativeRoot,
       '.qsrc.json'
     )
-    // moduleStorePath 依赖 rootDir 和 relativeRoot
+
     fs.ensureFileSync(moduleStorePath)
     currentModule = getCurrentModule(moduleStorePath, defaultDemo)
     fs.outputJsonSync(moduleStorePath, { module: currentModule })
     return {
-      ...options,
       defaultDemo,
       qsrcPath,
       moduleStorePath,
-      root: path.join(rootDir, relativeRoot),
-      relativeRoot,
       rootDir,
       currentModule,
-      isRoot
+      isRoot,
+      ...options,
+      root: path.join(rootDir, relativeRoot) // 绝对路径之后的 switch new print 都依赖root 值
     }
   }
 
