@@ -25,6 +25,8 @@ function main (options) {
     attempt(printModule, options)
   } else if (options.init) {
     init()
+  } else if (options.reset) {
+    resetRoot()
   } else {
     console.info(blue('help: qs -h'))
     attempt(printModule, options)
@@ -73,9 +75,17 @@ function init () {
     fs.outputJsonSync(moduleStorePath, { module: defaultDemo })
   })
 }
+function resetRoot () {
+  const { qsrcPath, relativeRoot } = options
+  let config = fs.readJsonSync(qsrcPath)
+  config.root = relativeRoot
+  console.log(config)
+  fs.writeJsonSync(qsrcPath, config)
+}
 function printModule (options) {
   const { currentModule, root } = options
   const allModules = fs.readdirSync(root)
+  console.info(green(root))
   allModules.forEach(item => {
     let isFile = /\./g.test(item)
     if (item === currentModule) {
@@ -175,6 +185,12 @@ const args = yargs
       alias: 'r',
       describe: 'root',
       type: 'string',
+      conflicts: ['init']
+    },
+    reset: {
+      alias: 'rs',
+      describe: 'reset Root',
+      type: 'boolean',
       conflicts: ['init']
     },
     list: {

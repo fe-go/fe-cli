@@ -5,7 +5,11 @@ const args = require('yargs').argv
 const findup = require('findup-sync')
 const { ConfigOutputPath } = require('../qs.config')
 const debug = require('debug')('qs')
-
+/**
+ * 将命令行参数和默认的配置参数结合
+ * @param {planObject} options 传入的命令行参数
+ * @returns {planObject} options 返回组合后的参数
+ */
 function getConfig (options) {
   /**
    * @var {planObject} config qs --init 命令生成的配置
@@ -15,7 +19,7 @@ function getConfig (options) {
    */
   let config, currentModule, qsrcPath, rootDir
   // init 模式直接返回
-  if (args.init) return
+  if (args.init) return options
 
   qsrcPath = findup(ConfigOutputPath)
 
@@ -24,10 +28,11 @@ function getConfig (options) {
     config = fs.readJsonSync(qsrcPath)
     let { moduleStorePath, defaultDemo, root: configRoot } = config
     let { root: cmdRoot } = options
-    let root = cmdRoot || configRoot
-    debug('root')
-    debug(root)
-    root = path.join(rootDir, root)
+    let relativeRoot = cmdRoot || configRoot
+    debug('rootDir')
+    debug(rootDir)
+    debug('relativeRoot')
+    debug(relativeRoot)
     moduleStorePath = path.join(rootDir, moduleStorePath)
     currentModule = getCurrentModule(moduleStorePath, defaultDemo)
     return {
@@ -35,7 +40,8 @@ function getConfig (options) {
       defaultDemo,
       qsrcPath,
       moduleStorePath,
-      root,
+      root: path.join(rootDir, relativeRoot),
+      relativeRoot,
       currentModule
     }
   } else {
