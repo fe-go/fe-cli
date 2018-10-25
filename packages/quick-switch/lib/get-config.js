@@ -20,7 +20,7 @@ function getConfig (options = {}) {
    * @var {string} qsrcPath qs --init 生成的 .qsrc.json  的 absolute path
    * @var {string} rootDir .qsrc.json 所在目录一般也就是项目根目录
    */
-  // 如果向父级遍历找不到 qsrc 就认为当前为root(root 只向上查找一级)
+  // 如果向父级遍历找不到 qsrc 就认为当前为root(root 只向上查找一级)，所以只需要一个相对的父子目录都拥有qsrc就可以构成一个qs命令执行环境
   const isRoot = !findup(ConfigOutputPath, { cwd: '..' })
   const isInit = args.init
   const rootDir = isRoot
@@ -41,14 +41,18 @@ function getConfig (options = {}) {
     // moduleStorePath 动态根据工作目录或者命令输入确定
     let moduleStorePath = path.join(
       rootDir,
-      ModuleStorePath,
-      relativeRoot,
-      '.qsrc.json'
+      // relativeRoot,
+      ModuleStorePath //  '.qsrc.json'
     )
 
     fs.ensureFileSync(moduleStorePath)
     currentModule = getCurrentModule(moduleStorePath, defaultDemo)
-    fs.outputJsonSync(moduleStorePath, { module: currentModule })
+
+    fs.outputJsonSync(moduleStorePath, {
+      ...fs.readJsonSync(moduleStorePath),
+      ...{ module: currentModule }
+    })
+
     return {
       defaultDemo,
       qsrcPath,

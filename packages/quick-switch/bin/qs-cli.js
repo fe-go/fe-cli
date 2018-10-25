@@ -40,7 +40,7 @@ function init () {
       name: 'root',
       message: "What's your root",
       default: function () {
-        return 'src'
+        return '.'
       }
     },
     {
@@ -50,13 +50,13 @@ function init () {
       default: function () {
         return '_demo'
       }
-    },
-    {
-      type: 'confirm',
-      name: 'rename',
-      message: 'Create new module will reanme files,Is this OK?(default No)',
-      default: false
     }
+    // {
+    //   type: 'confirm',
+    //   name: 'rename',
+    //   message: 'Create new module will reanme files,Is this OK?(default No)',
+    //   default: false
+    // }
   ]
 
   inquirer.prompt(questions).then(answers => {
@@ -101,13 +101,14 @@ function switchModule (currentModule, nextModule) {
 }
 function rewriteModule (nextModule) {
   const { moduleStorePath } = options
-  fs.outputJsonSync(moduleStorePath, { module: nextModule })
+  const config = fs.readJsonSync(moduleStorePath)
+  fs.outputJsonSync(moduleStorePath, { ...config, ...{ module: nextModule } })
   console.info(
     green(`Successfully written ${nextModule} to ${moduleStorePath}`)
   )
 }
 function createModule (sourceModule, targetModule) {
-  const { root, rename } = options
+  const { root, rename = false } = options
 
   if (!fs.pathExistsSync(path.join(root, sourceModule))) {
     console.info(red(`${sourceModule} directory not found`))

@@ -1,4 +1,4 @@
 module.exports = {
   ConfigOutputPath: '.qsrc.json',
-  ModuleStorePath: 'node_modules/.qsrc/'
+  ModuleStorePath: '.qsrc.json'
 }
