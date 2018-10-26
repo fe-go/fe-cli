@@ -22,15 +22,13 @@ function getConfig (options = {}) {
    */
 
   const isInit = !!args.init
+  // init 模式直接返回
+  if (isInit) return options
+
   const rootDir = path.parse(findup(ConfigOutputPath)).dir
   let config, currentModule, qsrcPath
   debug(green('isInit, rootDir'), isInit, rootDir)
 
-  // init 模式直接返回
-  if (isInit) {
-    return options
-  }
-  // 获取离当前目录最近的 qsrc 目前子目录可以个性化 root,rename 配置
   if ((qsrcPath = findup(ConfigOutputPath))) {
     config = fs.readJsonSync(qsrcPath)
     let { defaultDemo, root: configRoot } = config
@@ -61,7 +59,6 @@ function getConfig (options = {}) {
       moduleStorePath,
       rootDir,
       currentModule,
-
       ...options,
       root: path.join(rootDir, relativeRoot) // 绝对路径之后的 switch new print 都依赖root 值
     }
