@@ -73,11 +73,11 @@ function printModule (options) {
   const allModules = fs.readdirSync(root)
 
   allModules.forEach(item => {
-    let isFile = /\./g.test(item)
+    let isFilter = /(\.|node_modules)/g.test(item)
     if (item === currentModule) {
-      !isFile && console.info(green(item))
+      !isFilter && console.info(green(item))
     } else {
-      !isFile && console.info(item)
+      !isFilter && console.info(item)
     }
   })
 }
@@ -198,7 +198,9 @@ const args = yargs
   })
   .help()
   .alias(['h', 'help'], 'help').argv
-
+/**
+ * @var {Object} options 全局
+ */
 const options = getConfig(args)
 
 main(options)
