@@ -115,5 +115,6 @@ const { getConfig } = require("quickly-switch")
 
 - root 动态设置 root
 - sourcename 自定义源
+- [x] 写DEMO 更新文档
 - [x] debug
 - [x] copy 文件的同时 rename（为了满足微信小程序,貌似其他情况没有这种蛋疼的需求）
