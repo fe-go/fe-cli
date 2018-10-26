@@ -1,13 +1,13 @@
 const fs = require('fs-extra')
 const path = require('path')
-const { red, blue, green,yellow } = require('chalk')
+const { red, blue, green, yellow } = require('chalk')
 const args = require('yargs').argv
 const findup = require('findup-sync')
 const { ConfigOutputPath, ModuleStorePath } = require('../qs.config')
 const debug = require('debug')('qs')
 
 /**
- * 将命令行参数和默认的配置参数结合 命令行优先级 > 子目录配置 > 根目录配置
+ * 将命令行参数和默认的配置参数结合 命令行优先级  > 根目录配置
  * @param {planObject} options 传入的命令行参数
  * @returns {planObject} options 返回组合后的参数
  * @example
@@ -20,14 +20,11 @@ function getConfig (options = {}) {
    * @var {string} qsrcPath qs --init 生成的 .qsrc.json  的 absolute path
    * @var {string} rootDir .qsrc.json 所在目录一般也就是项目根目录
    */
-  // 如果向父级遍历找不到 qsrc 就认为当前为root(root 只向上查找一级)，所以只需要一个相对的父子目录都拥有qsrc就可以构成一个qs命令执行环境
-  const isRoot = !findup(ConfigOutputPath, { cwd: '..' })
+
   const isInit = !!args.init
-  const rootDir = isRoot
-    ? process.cwd()
-    : path.parse(findup(ConfigOutputPath, { cwd: '..' })).dir
+  const rootDir = path.parse(findup(ConfigOutputPath)).dir
   let config, currentModule, qsrcPath
-  debug(green('isRoot, isInit, rootDir'), isRoot, isInit, rootDir)
+  debug(green('isInit, rootDir'), isInit, rootDir)
 
   // init 模式直接返回
   if (isInit) {
@@ -64,7 +61,7 @@ function getConfig (options = {}) {
       moduleStorePath,
       rootDir,
       currentModule,
-      isRoot,
+
       ...options,
       root: path.join(rootDir, relativeRoot) // 绝对路径之后的 switch new print 都依赖root 值
     }
@@ -78,7 +75,11 @@ function getCurrentModule (moduleStorePath, defaultDemo, currentRoot) {
   let currentModule
   try {
     currentModule = fs.readJsonSync(moduleStorePath).module
-    if (!fs.existsSync(path.join(currentRoot, currentModule))) { console.info(yellow(`warning ${path.join(currentRoot, currentModule)} not exist!`)) }
+    if (!fs.existsSync(path.join(currentRoot, currentModule))) {
+      console.info(
+        yellow(`warning ${path.join(currentRoot, currentModule)} not exist!`)
+      )
+    }
   } catch (error) {
     // console.info(red(`can't found currentModule`))
     // console.info(blue('use: qs --init qs --switch <name>'))
