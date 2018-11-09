@@ -1,0 +1,15 @@
+{
+  "name": "auto-index",
+  "version": "1.0.0",
+  "description": "Automatic index generation",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "glob": "^7.1.3"
+  }
+}
