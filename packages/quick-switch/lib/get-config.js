@@ -24,49 +24,49 @@ function getConfig (options = {}) {
   const isInit = !!args.init
   // init 模式直接返回
   if (isInit) return options
+  try {
+    const rootDir = path.parse(findup(ConfigOutputPath)).dir
+    let config, currentModule, qsrcPath
+    debug(green('isInit, rootDir'), isInit, rootDir)
+    if ((qsrcPath = findup(ConfigOutputPath))) {
+      config = fs.readJsonSync(qsrcPath)
+      let { defaultDemo, root: configRoot } = config
+      let { root: cmdRoot } = options
+      let relativeRoot = cmdRoot || configRoot
+      // moduleStorePath 动态根据工作目录或者命令输入确定
+      let moduleStorePath = path.join(
+        rootDir,
+        // relativeRoot,
+        ModuleStorePath //  '.qsrc.json'
+      )
 
-  const rootDir = path.parse(findup(ConfigOutputPath)).dir
-  let config, currentModule, qsrcPath
-  debug(green('isInit, rootDir'), isInit, rootDir)
+      fs.ensureFileSync(moduleStorePath)
+      currentModule = getCurrentModule(
+        moduleStorePath,
+        defaultDemo,
+        path.join(rootDir, relativeRoot)
+      )
 
-  if ((qsrcPath = findup(ConfigOutputPath))) {
-    config = fs.readJsonSync(qsrcPath)
-    let { defaultDemo, root: configRoot } = config
-    let { root: cmdRoot } = options
-    let relativeRoot = cmdRoot || configRoot
-    // moduleStorePath 动态根据工作目录或者命令输入确定
-    let moduleStorePath = path.join(
-      rootDir,
-      // relativeRoot,
-      ModuleStorePath //  '.qsrc.json'
-    )
+      fs.outputJsonSync(moduleStorePath, {
+        ...fs.readJsonSync(moduleStorePath),
+        ...{ module: currentModule }
+      })
 
-    fs.ensureFileSync(moduleStorePath)
-    currentModule = getCurrentModule(
-      moduleStorePath,
-      defaultDemo,
-      path.join(rootDir, relativeRoot)
-    )
-
-    fs.outputJsonSync(moduleStorePath, {
-      ...fs.readJsonSync(moduleStorePath),
-      ...{ module: currentModule }
-    })
-
-    return {
-      defaultDemo,
-      qsrcPath,
-      moduleStorePath,
-      rootDir,
-      currentModule,
-      ...options,
-      root: path.join(rootDir, relativeRoot) // 绝对路径之后的 switch new print 都依赖root 值
+      return {
+        defaultDemo,
+        qsrcPath,
+        moduleStorePath,
+        rootDir,
+        currentModule,
+        ...options,
+        root: path.join(rootDir, relativeRoot) // 绝对路径之后的 switch new print 都依赖root 值
+      }
     }
+  } catch (error) {
+    console.info(red(`Can't found ${ConfigOutputPath}`))
+    console.info(blue('Please use: qs --init'))
+    process.exit(0)
   }
-
-  console.info(red(`Can't found ${ConfigOutputPath}`))
-  console.info(blue('Please use: qs --init'))
-  process.exit(0)
 }
 function getCurrentModule (moduleStorePath, defaultDemo, currentRoot) {
   let currentModule

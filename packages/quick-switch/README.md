@@ -18,7 +18,6 @@ $ qs --new=nav // 根据_demo 生成 nav
   + nav
    - index.js
 ---
-如果模板为微信小程序形式参考下面的 `reanme` 配置
 ```
 
 ## install
@@ -31,10 +30,10 @@ $ npm install quickly-switch -g
 
 `--init` 主要是初始化 qs 的默认配置目前有四个个配置,生成的配置默认存在当前目录的 `.qsrc.json`文件中
 
-- `root` 模板的根目录默认值为`src` (等同上文中的`components`)
+- `root` 模板的根目录默认值为`.` (等同上文中的`components`)
 - `defaultDemo` 默认模板默认值为 `_demo`（等同上文中`_demo`）
-- `moduleStorePath` 当前选择的模块的存储路径默认值为 `./node_modules/.qsrc.json`
-- `rename` 是否创建新模块的时候是时将新模块内的文件名字全部改为模块名,默认为`false`
+- ~~`moduleStorePath` 当前选择的模块的存储路径默认值为 `./node_modules/.qsrc.json`~~
+- ~~`rename` 是否创建新模块的时候是时将新模块内的文件名字全部改为模块名,默认为`false`~~
 
 ```bash
 当rename 为true时
@@ -62,59 +61,45 @@ nav
 ```js
 // qs 命令会记录当前切换到那个模块下，那记录这个有什么用呢，举个例子
 // 比如我们一个工程有多个模块，每个模块单独打包,这样就可以通过读取`.qsrc.json`获取当前模块动态打包
-// 也可以本地安装通过getConfig方法直接获取当前模块
-const { getConfig } = require("quickly-switch")
-const { currentModule } = getConfig()
+
+const { module: currentModule, root } = fs.readJsonSync('.qsrc.json')
 module.exports = {
-  entry: path.join(__dirname, "src", currentModule),
-  mode: "development",
+  entry: path.resolve(root, currentModule),
+  mode: 'development',
   context: __dirname,
   output: {
-    filename: "bundle.js",
-    path: path.resolve(__dirname, "build")
-  }
-}
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'build')
+  },
 ```
 
 ![](img/qsnew.gif)
 
-## local install 
-
-目前  本地安装 `quickly-switch` 只导出一个方法 `getConfig`,之后准备添加一些其他工具方法
-
-```js
-const { getConfig } = require("quickly-switch")
-const qsConfig = getConfig()
-// 目前getConfig 的返回值为一个对象形式如下
-{
-  "root": "src",
-  "defaultDemo": "_demo",
-  "moduleStorePath": "./node_modules/.qsrc.json",
-  "rename": false,
-  "currentModule": "_demo"
-}
-```
-
 ## debug
 
-将环境变量`DEBUG`设置为`qs` 当 debug 模式下会输出 qs 的配置和命令行参数信息
+将环境变量`DEBUG`设置为`qs` 当 debug 模式下会输出 qs 的配置和命令行参数信息,下面的信息具有时效性更新代表的时候输出就不一定这样喽
 
 ```js
+   alg git:(master) export DEBUG=qs
+➜  alg git:(master) qs
+  qs isInit, rootDir false /Users/qudian/liz/workspace/alg +0ms
   qs options +0ms
-  qs { root: 'src',
-  qs   defaultDemo: '_demo',
-  qs   moduleStorePath: './node_modules/.qsrc.json',
-  qs   currentModule: 'jjj',
+  qs { defaultDemo: '_demo',
+  qs   qsrcPath: 'xxxxxxxx/alg/.qsrc.json',
+  qs   moduleStorePath: 'xxxxxxxx/alg/.qsrc.json',
+  qs   rootDir: 'xxxxxxxx/alg',
+  qs   currentModule: '_demo',
   qs   _: [],
-  qs   s: 'dddddd',
-  qs   switch: 'dddddd',
-  qs   '$0': 'qs' } +1ms
+  qs   '$0': 'qs',
+  qs   root: '/Users/qudian/liz/workspace/alg' } +1ms
+❤️ For more info use help: qs -h
+_demo
 ```
 
 ## TODO
 
 - root 动态设置 root
 - sourcename 自定义源
-- [x] 写DEMO 更新文档
+- [x] 写 DEMO 更新文档
 - [x] debug
 - [x] copy 文件的同时 rename（为了满足微信小程序,貌似其他情况没有这种蛋疼的需求）
