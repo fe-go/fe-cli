@@ -34,12 +34,20 @@ export {
 } from "./nest/child-nest/grandson-nest"
 ```
 
+## 安装
+
+```bash
+$ npm install index-creater
+```
+
 ## example
 
 ```js
-autoImport("components", {
-  match: "*.js", // 此处参数为glob类型
+const autoIndex = require("../index")
+
+autoIndex("components", {
+  match: "**/!(*.*)", // 此处参数为glob类型
   separator: /(-|_)/g,
-  exportPattern: `export { default as [name] , I[name]Props } from '[path]'`
+  exportPattern: `export { default as [name] , I[name]Props } from '[path]'` // eslint-disable-line
 })
 ```
