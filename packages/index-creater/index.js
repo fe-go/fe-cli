@@ -54,9 +54,9 @@ module.exports = (root, options = {}) => {
   })
 
   const str = result.join("\n")
-  fs.writeFileSync(path.join(root, `index.${suffix}`), `${str}\n`)
+  fs.writeFileSync(path.join(root, `index.${suffix.replace(/\./g,'')}`), `${str}\n`)
   console.log(
-    chalk.green(`${path.join(root, `index.${suffix}`)} update succeed!`)
+    chalk.green(`${path.join(root, `index.${suffix.replace(/\./g,'')}`)} update succeed!`)
   )
 }
 function capitalize([first, ...rest]) {
