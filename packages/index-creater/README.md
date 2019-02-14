@@ -51,4 +51,9 @@ autoIndex("components", {
   exportPattern: `export { default as [name] , I[name]Props } from '[path]'`,
   suffix: ".js"
 })
+传参兼容数组形式
+添加过滤条件
+添加一个扩展回调 参数传入 所以配置的 name 和 path
+添加命令行调用方式
+添加配置文件
 ```
