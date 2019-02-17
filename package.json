@@ -4,7 +4,8 @@
   "description": "Automatic index generation",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev":"cd example && node --inspect-brk index.js"
   },
   "author": "advence-liz",
   "license": "ISC",
