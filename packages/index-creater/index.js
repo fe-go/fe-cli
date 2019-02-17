@@ -23,14 +23,15 @@ const glob = require("glob")
  *      + grandson-nest
  *        - index.js
  * 自动生成components/index.js
- * 
+ *
  *  export { default as Button , IButtonProps } from './button'
  *  export { default as FooBar , IFooBarProps } from './foo-bar'
  *  export { default as Nest , INestProps } from './nest'
  *  export { default as ChildNest , IChildNestProps } from './nest/child-nest'
  *  export { default as GrandsonNest , IGrandsonNestProps } from './nest/child-nest/grandson-nest'
  * @example
- *  autoImport('components', {
+ *  autoImport({
+ *   root:'components'
  *   match: '*.js',// 此处参数为glob类型
  *   separator: /(-|_)/g,
  *   exportPattern: `export { default as [name] , I[name]Props } from '[path]'`
@@ -39,24 +40,44 @@ const glob = require("glob")
  *  [ ] custom getName function
  */
 
-module.exports = (root, options = {}) => {
-  const { match, separator = /(-|_)/g, exportPattern, suffix = "js" } = options
-  const dirs = glob.sync(path.resolve(root, match))
+module.exports = (options = {}) => {
+  const {
+    match,
+    root,
+    separator = /(-|_)/g,
+    exportPattern,
+    suffix = "js",
+    ignore = "",
+    callback = () => {}
+  } = options
+  const rootPath = path.resolve(root)
+  const dirs = glob.sync(path.resolve(rootPath, match), { ignore })
 
-  const result = dirs.map(from => {
-    const name = getPascal(path.parse(from).name, separator)
-    const filePath = `./${path.relative(root, from)}`
+  const items = dirs.map(filePath => {
+    const name = getPascal(path.parse(filePath).name, separator)
+    const relativePath = `./${path.relative(rootPath, filePath)}`
+
     const exportTemplate = exportPattern
       .replace(/\[name\]/g, name)
-      .replace(/\[path\]/g, filePath)
+      .replace(/\[path\]/g, relativePath)
 
-    return exportTemplate
+    return { exportTemplate, name, relativePath, filePath }
   })
 
-  const str = result.join("\n")
-  fs.writeFileSync(path.join(root, `index.${suffix.replace(/\./g,'')}`), `${str}\n`)
+  const template = items.map(({ exportTemplate }) => exportTemplate).join("\n")
+  const result = callback(template, items) || template
+
+  fs.writeFileSync(
+    path.join(rootPath, `index.${suffix.replace(/\./g, "")}`),
+    `${result}\n`
+  )
   console.log(
-    chalk.green(`${path.join(root, `index.${suffix.replace(/\./g,'')}`)} update succeed!`)
+    chalk.green(
+      `${path.join(
+        rootPath,
+        `index.${suffix.replace(/\./g, "")}`
+      )} update succeed!`
+    )
   )
 }
 function capitalize([first, ...rest]) {
