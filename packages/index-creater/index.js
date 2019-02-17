@@ -1,7 +1,7 @@
-const fs = require("fs")
-const path = require("path")
-const chalk = require("chalk")
-const glob = require("glob")
+const fs = require("fs");
+const path = require("path");
+const chalk = require("chalk");
+const glob = require("glob");
 /**
  * 自动生成索引文件
  * @param {String} root 要生成索引的根目录
@@ -30,7 +30,7 @@ const glob = require("glob")
  *  export { default as ChildNest , IChildNestProps } from './nest/child-nest'
  *  export { default as GrandsonNest , IGrandsonNestProps } from './nest/child-nest/grandson-nest'
  * @example
- *  autoImport({
+ *  createIndex({
  *   root:'components'
  *   match: '*.js',// 此处参数为glob类型
  *   separator: /(-|_)/g,
@@ -40,7 +40,7 @@ const glob = require("glob")
  *  [ ] custom getName function
  */
 
-module.exports = (options = {}) => {
+function createIndex(options = {}) {
   const {
     match,
     root,
@@ -49,28 +49,28 @@ module.exports = (options = {}) => {
     suffix = "js",
     ignore = "",
     callback = () => {}
-  } = options
-  const rootPath = path.resolve(root)
-  const dirs = glob.sync(path.resolve(rootPath, match), { ignore })
+  } = options;
+  const rootPath = path.resolve(root);
+  const dirs = glob.sync(path.resolve(rootPath, match), { ignore });
 
   const items = dirs.map(filePath => {
-    const name = getPascal(path.parse(filePath).name, separator)
-    const relativePath = `./${path.relative(rootPath, filePath)}`
+    const name = getPascal(path.parse(filePath).name, separator);
+    const relativePath = `./${path.relative(rootPath, filePath)}`;
 
     const exportTemplate = exportPattern
       .replace(/\[name\]/g, name)
-      .replace(/\[path\]/g, relativePath)
+      .replace(/\[path\]/g, relativePath);
 
-    return { exportTemplate, name, relativePath, filePath }
-  })
+    return { exportTemplate, name, relativePath, filePath };
+  });
 
-  const template = items.map(({ exportTemplate }) => exportTemplate).join("\n")
-  const result = callback(template, items) || template
+  const template = items.map(({ exportTemplate }) => exportTemplate).join("\n");
+  const result = callback(template, items) || template;
 
   fs.writeFileSync(
     path.join(rootPath, `index.${suffix.replace(/\./g, "")}`),
     `${result}\n`
-  )
+  );
   console.log(
     chalk.green(
       `${path.join(
@@ -78,20 +78,45 @@ module.exports = (options = {}) => {
         `index.${suffix.replace(/\./g, "")}`
       )} update succeed!`
     )
-  )
-}
-function capitalize([first, ...rest]) {
-  return first.toUpperCase() + rest.join("")
+  );
 }
 
+/**
+ * 将传入的字符串的首字母转为大写
+ */
+function capitalize([first, ...rest]) {
+  return first.toUpperCase() + rest.join("");
+}
+/**
+ *
+ * @param {String} x 传入字符串
+ * @param {RegExp} separator 分割符号
+ * @example
+ * getPascal('action-sheet',/(-|_)/g)
+ * => 'ActionSheet'
+ * @example
+ *  getPascal('action',/(-|_)/g)
+ * => 'Action'
+ */
 function getPascal(x, separator) {
-  const arr = x.split(separator)
-  let str = capitalize(x)
+  const arr = x.split(separator);
+  let str = capitalize(x);
   if (arr.length > 1) {
-    str = arr.reduce((a, b) => capitalize(a) + capitalize(b))
+    str = arr.reduce((a, b) => capitalize(a) + capitalize(b));
   }
-  return str.replace(separator, "")
+  // str.replace(separator, "") 是为了处理当
+  return str.replace(separator, "");
 }
-function getCamel([first, ...rest]) {
-  return first.toLowerCase() + rest.join("")
-}
+/**
+ * 整理参数传入 createIndex 的参数默认支持两种形式，倒不是因为接口支持的格式越多越牛B只是因为之前没考虑批处理为了兼容所以支持两种格式
+ * @param {Object|Array} config
+ */
+module.exports = config => {
+  let configs = [config];
+  if (config.length) {
+    configs = config;
+  }
+  configs.forEach(config => {
+    createIndex(config);
+  });
+};
