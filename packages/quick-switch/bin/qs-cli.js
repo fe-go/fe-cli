@@ -95,8 +95,24 @@ function switchModule (currentModule, nextModule) {
     return
   }
   if (nextModule) {
-    createModule(currentModule, nextModule)
-    rewriteModule(nextModule)
+    inquirer
+      .prompt({
+        type: 'confirm',
+        name: 'createNew',
+        message: blue(
+          `The current module ${green(
+            nextModule
+          )} does not exist whether to create a new module (default no)`
+        ),
+        default: false
+      })
+      .then(answers => {
+        const { createNew } = answers
+        if (createNew) {
+          createModule(currentModule, nextModule)
+          rewriteModule(nextModule)
+        }
+      })
   }
 }
 function rewriteModule (nextModule) {
