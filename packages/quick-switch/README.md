@@ -110,12 +110,12 @@ Usage: qs [options]
 
 ## debug
 
-将环境变量`DEBUG`设置为`qs` 当 debug 模式下会输出 qs 的配置和命令行参数信息 ,下面的信息具有时效性更新代表的时候输出就不一定这样喽
+将环境变量`DEBUG`设置为`qs` 当 debug 模式下会输出 qs 的配置和命令行参数信息,下面的信息具有时效性更新代表的时候输出就不一定这样喽
 
 ```js
    alg git:(master) export DEBUG=qs
 ➜  alg git:(master) qs
-  qs isInit, rootDir false /Users/qudian/liz/workspace/alg +0ms
+  qs isInit, rootDir false /xxx/workspace/alg +0ms
   qs options +0ms
   qs { defaultDemo: '_demo',
   qs   qsrcPath: 'xxxxxxxx/alg/.qsrc.json',
