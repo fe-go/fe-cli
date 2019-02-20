@@ -4,12 +4,13 @@ const chalk = require("chalk");
 const glob = require("glob");
 /**
  * 自动生成索引文件
- * @param {String} root 要生成索引的根目录
- * @param {Object} options 下面的是options 的属性
- *        @prop {String} match 子模块的匹配规则
- *        @prop {Regex} separator 子模块目录(文件)命名分割符默认为 /(-|_)/g
- *        @prop {String} exportPattern 子模块导出模板
- *        @prop {String} suffix 生成index文件的后缀默认为 '.js'
+ * @param {String} root 要生成索引的根目录,绝对路径或者现对路径，如果是相对路径会通过path.resolve转为绝对路径
+ * @prop {String} match 子模块的匹配规则 glob pattern
+ * @prop {Regex} separator 子模块目录(文件)命名分割符默认为 /(-|_)/g
+ * @prop {String} exportPattern 子模块导出模板
+ * @prop {String} suffix 生成index文件的后缀默认为 '.js'
+ * @prop {String|Array} ignore glob pattern or glob pattern array
+ * @prop {(template,items)=>String} callback 自定义回调函数,template 为引进生成的文件模板，items 匹配的文件信息，返回值为新的模板
  * @desc
  * 假设有目录结构如下自动生成componets的索引文件index.js
  * - componets
@@ -30,14 +31,35 @@ const glob = require("glob");
  *  export { default as ChildNest , IChildNestProps } from './nest/child-nest'
  *  export { default as GrandsonNest , IGrandsonNestProps } from './nest/child-nest/grandson-nest'
  * @example
- *  createIndex({
+ *  indexCreater({
  *   root:'components'
  *   match: '*.js',// 此处参数为glob类型
  *   separator: /(-|_)/g,
  *   exportPattern: `export { default as [name] , I[name]Props } from '[path]'`
  * })
+ * indexCreater([
+ *   {
+ *     root: "components", // 绝对路径或者现对路径，如果是相对路径会通过path.resolve转为绝对路径
+ *     match: "xxx/xxx", // 此处参数为glob类型
+ *     separator: /(-|_)/g,
+ *     exportPattern: `export { default as [name] , I[name]Props } from '[path]'`,
+ *     ignore:'button', // glob pattern 或者 glob pattern Array
+ *     suffix: ".ts",
+ *     callback(template, items) {
+ *       return template + "\n// test";
+ *     }
+ *   },
+ *   {
+ *     root: "otherComponents",
+ *     match: "xxx/xxx", // 此处参数为glob类型
+ *     separator: /(-|_)/g,
+ *     exportPattern: `export { default as [name] } from '[path]'`,
+ *     suffix: ".jsx"
+ *   }
+ * ]);
  * @todo
  *  [ ] custom getName function
+ *  [ ] 添加配置文件添加命令行调用方式
  */
 
 function createIndex(options = {}) {
@@ -51,8 +73,10 @@ function createIndex(options = {}) {
     callback = () => {}
   } = options;
   const rootPath = path.resolve(root);
-  const  currentIgnore = ignore ? path.resolve(rootPath, ignore) : false;
-  const dirs = glob.sync(path.resolve(rootPath, match), { ignore:currentIgnore });
+  const currentIgnore = ignore ? path.resolve(rootPath, ignore) : false;
+  const dirs = glob.sync(path.resolve(rootPath, match), {
+    ignore: currentIgnore
+  });
 
   const items = dirs.map(filePath => {
     const name = getPascal(path.parse(filePath).name, separator);
