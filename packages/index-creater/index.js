@@ -47,11 +47,12 @@ function createIndex(options = {}) {
     separator = /(-|_)/g,
     exportPattern,
     suffix = "js",
-    ignore = "",
+    ignore = false,
     callback = () => {}
   } = options;
   const rootPath = path.resolve(root);
-  const dirs = glob.sync(path.resolve(rootPath, match), { ignore });
+  const  currentIgnore = ignore ? path.resolve(rootPath, ignore) : false;
+  const dirs = glob.sync(path.resolve(rootPath, match), { ignore:currentIgnore });
 
   const items = dirs.map(filePath => {
     const name = getPascal(path.parse(filePath).name, separator);
