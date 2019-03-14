@@ -1,7 +1,7 @@
-const fs = require("fs");
-const path = require("path");
-const chalk = require("chalk");
-const glob = require("glob");
+const fs = require("fs")
+const path = require("path")
+const chalk = require("chalk")
+const glob = require("glob")
 /**
  * 自动生成索引文件
  * @param {String} root 要生成索引的根目录,绝对路径或者现对路径，如果是相对路径会通过path.resolve转为绝对路径
@@ -71,31 +71,36 @@ function createIndex(options = {}) {
     suffix = "js",
     ignore = false,
     callback = () => {}
-  } = options;
-  const rootPath = path.resolve(root);
-  const currentIgnore = ignore ? path.resolve(rootPath, ignore) : false;
+  } = options
+  const rootPath = path.resolve(root)
+  let ignorePattern = false
+  if (ignore) {
+    const globs = ignore.constructor === Array ? ignore : [ignore]
+    
+    ignorePattern = globs.map(x => path.resolve(rootPath, x))
+  }
   const dirs = glob.sync(path.resolve(rootPath, match), {
-    ignore: currentIgnore
-  });
+    ignore: ignorePattern
+  })
 
   const items = dirs.map(filePath => {
-    const name = getPascal(path.parse(filePath).name, separator);
-    const relativePath = `./${path.relative(rootPath, filePath)}`;
+    const name = getPascal(path.parse(filePath).name, separator)
+    const relativePath = `./${path.relative(rootPath, filePath)}`
 
     const exportTemplate = exportPattern
       .replace(/\[name\]/g, name)
-      .replace(/\[path\]/g, relativePath);
+      .replace(/\[path\]/g, relativePath)
 
-    return { exportTemplate, name, relativePath, filePath };
-  });
+    return { exportTemplate, name, relativePath, filePath }
+  })
 
-  const template = items.map(({ exportTemplate }) => exportTemplate).join("\n");
-  const result = callback(template, items) || template;
+  const template = items.map(({ exportTemplate }) => exportTemplate).join("\n")
+  const result = callback(template, items) || template
 
   fs.writeFileSync(
     path.join(rootPath, `index.${suffix.replace(/\./g, "")}`),
     `${result}\n`
-  );
+  )
   console.log(
     chalk.green(
       `${path.join(
@@ -103,14 +108,14 @@ function createIndex(options = {}) {
         `index.${suffix.replace(/\./g, "")}`
       )} update succeed!`
     )
-  );
+  )
 }
 
 /**
  * 将传入的字符串的首字母转为大写
  */
 function capitalize([first, ...rest]) {
-  return first.toUpperCase() + rest.join("");
+  return first.toUpperCase() + rest.join("")
 }
 /**
  *
@@ -124,16 +129,16 @@ function capitalize([first, ...rest]) {
  * => 'Action'
  */
 function getPascal(x, separator) {
-  const arr = x.split(separator);
-  let str = capitalize(x);
+  const arr = x.split(separator)
+  let str = capitalize(x)
   if (arr.length > 1) {
-    str = arr.reduce((a, b) => capitalize(a) + capitalize(b));
+    str = arr.reduce((a, b) => capitalize(a) + capitalize(b))
   }
   // str.replace(separator, "") 是为了处理当
-  return str.replace(separator, "");
+  return str.replace(separator, "")
 }
 /**
- * @param {Object|Array} config 
+ * @param {Object|Array} config
  * @prop {String} match 子模块的匹配规则 glob pattern
  * @prop {Regex} separator 子模块目录(文件)命名分割符默认为 /(-|_)/g
  * @prop {String} exportPattern 子模块导出模板
@@ -142,11 +147,11 @@ function getPascal(x, separator) {
  * @prop {(template,items)=>String} callback 自定义回调函数,template 为引进生成的文件模板，items 匹配的文件信息，返回值为新的模板
  */
 module.exports = config => {
-  let configs = [config];
+  let configs = [config]
   if (config.length) {
-    configs = config;
+    configs = config
   }
   configs.forEach(config => {
-    createIndex(config);
-  });
-};
+    createIndex(config)
+  })
+}
