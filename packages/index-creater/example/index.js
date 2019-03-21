@@ -18,5 +18,10 @@ indexCreater([
     separator: /(-|_)/g,
     exportPattern: `export { default as [name] } from '[path]'`,
     suffix: ".jsx"
+  },
+  {
+    root: "autoComponents",
+    separator: /(-|_)/g,
+    suffix: ".js"
   }
 ]);
