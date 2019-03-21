@@ -1,0 +1,5 @@
+export { default as FooBarBaz } from './foo-bar-baz/index.js'
+export { quxCls, quxFunc, quxVar1, quxVar2, qux1, qux2 } from './foo-bar-baz/qux.js'
+export { default as Bar, barVar } from './foo/bar.js'
+export { default as Baz, bazVar } from './foo/baz/index.js'
+export { default as Foo, fooVar } from './foo/index.js'

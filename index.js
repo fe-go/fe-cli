@@ -2,6 +2,8 @@ const fs = require("fs")
 const path = require("path")
 const chalk = require("chalk")
 const glob = require("glob")
+const esprima = require("esprima")
+const ast = require("./ast")
 /**
  * 自动生成索引文件
  * @param {String} root 要生成索引的根目录,绝对路径或者现对路径，如果是相对路径会通过path.resolve转为绝对路径
@@ -73,32 +75,65 @@ function createIndex(options = {}) {
     callback = () => {}
   } = options
   const rootPath = path.resolve(root)
-  let ignorePattern = false
+  const outPath = path.join(rootPath, `index.${suffix.replace(/\./g, "")}`)
+  let ignorePattern = [outPath]
+  let items = []
   if (ignore) {
     const globs = ignore.constructor === Array ? ignore : [ignore]
-    
-    ignorePattern = globs.map(x => path.resolve(rootPath, x))
+    ignorePattern = ignorePattern.concat(globs.map(x => path.resolve(rootPath, x)))
   }
-  const dirs = glob.sync(path.resolve(rootPath, match), {
-    ignore: ignorePattern
-  })
 
-  const items = dirs.map(filePath => {
-    const name = getPascal(path.parse(filePath).name, separator)
-    const relativePath = `./${path.relative(rootPath, filePath)}`
+  if (exportPattern) { // origin
+    const dirs = glob.sync(path.resolve(rootPath, match), {
+      ignore: ignorePattern
+    })
 
-    const exportTemplate = exportPattern
-      .replace(/\[name\]/g, name)
-      .replace(/\[path\]/g, relativePath)
+    items = dirs.map(filePath => {
+      const name = getPascal(path.parse(filePath).name, separator)
+      const relativePath = `./${path.relative(rootPath, filePath)}`
 
-    return { exportTemplate, name, relativePath, filePath }
-  })
+      const exportTemplate = exportPattern
+        .replace(/\[name\]/g, name)
+        .replace(/\[path\]/g, relativePath)
+
+      return { exportTemplate, name, relativePath, filePath }
+    })
+  } else { // generate with ast
+    const files = glob.sync(path.resolve(rootPath, '**/*.js'), {
+      ignore: ignorePattern
+    })
+
+    files.forEach((filePath) => {
+      const pathOpt = path.parse(filePath);
+      const code = fs.readFileSync(filePath, { encoding: 'utf8' });
+      if (code && code.trim()) {
+        try {
+          const tree = esprima.parseModule(code)
+          const ctx = ast.filterExport(tree)
+          const relativePath = `./${path.relative(rootPath, filePath)}`
+          const name = getPascal(
+            pathOpt.name !== 'index' ? pathOpt.name : path.basename(pathOpt.dir),
+            separator
+          )
+
+          let list = []
+          if (ctx.default) list.push(`default as ${name}`)
+          list = list.concat(ctx.name)
+
+          const exportTemplate = list.length ? `export { ${list.join(', ')} } from '${relativePath}'` : ''
+          items.push({ exportTemplate, name, relativePath, filePath })
+        } catch (ex) {
+          console.log(ex)
+        }
+      }
+    })
+  }
 
   const template = items.map(({ exportTemplate }) => exportTemplate).join("\n")
   const result = callback(template, items) || template
 
   fs.writeFileSync(
-    path.join(rootPath, `index.${suffix.replace(/\./g, "")}`),
+    outPath,
     `${result}\n`
   )
   console.log(
