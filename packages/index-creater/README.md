@@ -74,6 +74,8 @@ indexCreater([
 ```
 ## 自动解析文件export 功能
 
+`exportPattern` 如果没配置自动解析 `glob` 匹配文件的 `export`
+
 ### 假设匹配的文件内容如下
 
 ```js
