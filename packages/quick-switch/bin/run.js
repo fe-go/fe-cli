@@ -3,8 +3,8 @@ const path = require('path')
 const fs = require('fs-extra')
 const { red, blue, green } = require('chalk')
 const inquirer = require('inquirer')
+const { createNewModule } = require('quickly-template/lib/createTemplate')
 const getConfig = require('../lib/get-config')
-const renameFiles = require('../lib/rename-files')
 const attempt = require('../lib/attempt')
 const debug = require('debug')('qs')
 const { ConfigOutputPath } = require('../qs.config')
@@ -91,17 +91,14 @@ function switchModule (currentModule, nextModule, options) {
   }
   // 如果next模块存在直接重写.qsrc.json
   if (allModules.indexOf(nextModule) > -1) {
-    rewriteModule(nextModule, options)
-    return
-  }
-  // 如果是新建直接创建
-  if (nextModule && isNew) {
-    createModule(currentModule, nextModule, options)
-    rewriteModule(nextModule, options)
+    isNew
+      ? console.log(red(`${nextModule} 已经存在 `))
+      : rewriteModule(nextModule, options)
+
     return
   }
   // 如果是切换判断一下是否创建新模块
-  if (nextModule && isSwitch) {
+  if (nextModule) {
     inquirer
       .prompt({
         type: 'confirm',
@@ -130,8 +127,8 @@ function rewriteModule (nextModule, options) {
     green(`Successfully written ${nextModule} to ${moduleStorePath}`)
   )
 }
-function createModule (sourceModule, targetModule, options) {
-  const { root, rename = false } = options
+function createModule (sourceModule, targetModule, options = {}) {
+  const { root } = options
   if (!fs.pathExistsSync(path.join(root, sourceModule))) {
     console.info(red(`${sourceModule} directory not found`))
     process.exit(0)
@@ -140,16 +137,15 @@ function createModule (sourceModule, targetModule, options) {
     console.info(
       red('The target module cannot be equal to the current module!')
     )
-    process.exit(0)
+    return
   }
 
-  debug('new')
-  debug(path.join(root, sourceModule))
-  debug(path.join(root, targetModule))
-
-  fs.copySync(path.join(root, sourceModule), path.join(root, targetModule))
-  debug('reanme', rename)
-  rename && renameFiles(path.join(root, targetModule), targetModule)
+  const globPattern = path.join(root, sourceModule, '**', '*.*')
+  const target = root
+  const renderOptions = { name: targetModule }
+  const name = targetModule
+  const argv = options
+  createNewModule({ globPattern, target, argv, renderOptions, name })
   console.info(green(`create ${targetModule} from ${sourceModule}`))
 }
 function deleteModule (targetModule, options) {
