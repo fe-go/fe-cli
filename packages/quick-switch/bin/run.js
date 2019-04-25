@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 const path = require('path')
 const fs = require('fs-extra')
-const yargs = require('yargs')
 const { red, blue, green } = require('chalk')
 const inquirer = require('inquirer')
 const getConfig = require('../lib/get-config')
@@ -15,12 +14,12 @@ function main (options) {
   debug(options)
   if (options.switch) {
     const { currentModule } = options
-    switchModule(currentModule, options.switch)
+    switchModule(currentModule, options.switch, options)
   } else if (options.new) {
     const { defaultDemo } = options
-    switchModule(defaultDemo, options.new)
+    switchModule(defaultDemo, options.new, options)
   } else if (options.delete) {
-    deleteModule(options.delete)
+    deleteModule(options.delete, options)
   } else if (options.list) {
     attempt(printModule, options)
   } else if (options.init) {
@@ -81,8 +80,8 @@ function printModule (options) {
     }
   })
 }
-function switchModule (currentModule, nextModule) {
-  const { root } = options
+function switchModule (currentModule, nextModule, options) {
+  const { root, switch: isSwitch, new: isNew } = options
   const allModules = fs.readdirSync(root)
   if (currentModule === nextModule) {
     console.info(
@@ -90,11 +89,19 @@ function switchModule (currentModule, nextModule) {
     )
     return
   }
+  // 如果next模块存在直接重写.qsrc.json
   if (allModules.indexOf(nextModule) > -1) {
-    rewriteModule(nextModule)
+    rewriteModule(nextModule, options)
     return
   }
-  if (nextModule) {
+  // 如果是新建直接创建
+  if (nextModule && isNew) {
+    createModule(currentModule, nextModule, options)
+    rewriteModule(nextModule, options)
+    return
+  }
+  // 如果是切换判断一下是否创建新模块
+  if (nextModule && isSwitch) {
     inquirer
       .prompt({
         type: 'confirm',
@@ -109,13 +116,13 @@ function switchModule (currentModule, nextModule) {
       .then(answers => {
         const { createNew } = answers
         if (createNew) {
-          createModule(currentModule, nextModule)
-          rewriteModule(nextModule)
+          createModule(currentModule, nextModule, options)
+          rewriteModule(nextModule, options)
         }
       })
   }
 }
-function rewriteModule (nextModule) {
+function rewriteModule (nextModule, options) {
   const { moduleStorePath } = options
   const config = fs.readJsonSync(moduleStorePath)
   fs.outputJsonSync(moduleStorePath, { ...config, ...{ module: nextModule } })
@@ -123,9 +130,8 @@ function rewriteModule (nextModule) {
     green(`Successfully written ${nextModule} to ${moduleStorePath}`)
   )
 }
-function createModule (sourceModule, targetModule) {
+function createModule (sourceModule, targetModule, options) {
   const { root, rename = false } = options
-
   if (!fs.pathExistsSync(path.join(root, sourceModule))) {
     console.info(red(`${sourceModule} directory not found`))
     process.exit(0)
@@ -146,7 +152,7 @@ function createModule (sourceModule, targetModule) {
   rename && renameFiles(path.join(root, targetModule), targetModule)
   console.info(green(`create ${targetModule} from ${sourceModule}`))
 }
-function deleteModule (targetModule) {
+function deleteModule (targetModule, options) {
   const { root, defaultDemo, currentModule } = options
   if (targetModule === defaultDemo) {
     console.info(red('The demo directory should not be removed!'))
@@ -162,61 +168,8 @@ function deleteModule (targetModule) {
     rewriteModule(defaultDemo)
   }
 }
-const args = yargs
-  .usage('Usage: $0 [options]')
-  .options({
-    new: {
-      alias: 'n',
-      describe: 'qs --new=<name> 跟默认模板创建新的模块<name>',
-      type: 'string',
-      conflicts: ['switch', 'delete']
-    },
-    switch: {
-      alias: 's',
-      describe:
-        'qs --switch=<name> 将当前模块切换为<name>,如果<name> 不存在则以当前模块为模板创建新模块',
-      type: 'string',
-      conflicts: ['new', 'delete']
-    },
-    delete: {
-      alias: 'd',
-      describe: 'delete',
-      type: 'string',
-      conflicts: ['new', 'switch']
-    },
-    root: {
-      alias: 'r',
-      describe: 'root',
-      type: 'string',
-      conflicts: ['init']
-    },
-    reset: {
-      alias: 'rs',
-      describe: 'reset Root',
-      type: 'boolean',
-      conflicts: ['init']
-    },
-    list: {
-      alias: 'l',
-      describe: '列出所有模块',
-      type: 'boolean'
-    },
-    rename: {
-      alias: 'R',
-      describe:
-        'qs -s=<name> --rename  将新生产模块所有文件的名字改为跟模板目录相同,为了微信小程序那种形式',
-      type: 'boolean'
-    },
-    init: {
-      describe:
-        '主要是初始化 qs 的默认配置目前有三个配置,生成的配置默认存在当前目录的 `.qsrc`文件中'
-    }
-  })
-  .help()
-  .alias(['h', 'help'], 'help').argv
-/**
- * @var {Object} options 全局
- */
-const options = getConfig(args)
 
-main(options)
+module.exports = args => {
+  const options = getConfig(args)
+  main(options)
+}
