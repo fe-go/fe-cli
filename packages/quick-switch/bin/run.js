@@ -81,7 +81,7 @@ function printModule (options) {
   })
 }
 function switchModule (currentModule, nextModule, options) {
-  const { root, switch: isSwitch, new: isNew } = options
+  const { root, new: isNew } = options
   const allModules = fs.readdirSync(root)
   if (currentModule === nextModule) {
     console.info(
@@ -89,16 +89,21 @@ function switchModule (currentModule, nextModule, options) {
     )
     return
   }
-  // 如果next模块存在直接重写.qsrc.json
+  // 如果next模块存在直接重写.qsrc.json,如果调用的是new 提示然后退出
   if (allModules.indexOf(nextModule) > -1) {
     isNew
-      ? console.log(red(`${nextModule} 已经存在 `))
+      ? console.log(red(`${nextModule} alread exist `))
       : rewriteModule(nextModule, options)
 
     return
   }
   // 如果是切换判断一下是否创建新模块
   if (nextModule) {
+    if (isNew) {
+      createModule(currentModule, nextModule, options)
+      rewriteModule(nextModule, options)
+      return
+    }
     inquirer
       .prompt({
         type: 'confirm',
