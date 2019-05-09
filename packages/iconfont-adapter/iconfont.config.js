@@ -1,6 +1,6 @@
 module.exports = {
   fontSize: 36,
   pattern: 'camelCase',
-  src: 'font',
+  src: 'iconfont',
   dest: 'assets'
 }
