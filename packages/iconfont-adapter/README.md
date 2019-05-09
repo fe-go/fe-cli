@@ -1,6 +1,7 @@
 # iconfont adapter
 
-写了一个小demo自动化将下载iconfont源文件转化为更贴近业务使用的模式，减少手动操作犯错误的机会
+写了一个小demo自动化将下载iconfont源文件转化为更贴近业务使用的模式，减少手动操作犯错误的机会,
+`font`目录为源文件`assets`为转化后的样子
 
 ## 去掉iconfont中冗余的引用资源并将引用的资源自动转化为base64
 
