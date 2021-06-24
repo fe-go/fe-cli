@@ -3,6 +3,7 @@
 const program = require('commander')
 const updateNotifier = require('update-notifier')
 const pkg = require('./package.json')
+const qrCode = require('./lib/qrcode')
 require('./lib/checkNodeVersion')
 
 const notifier = updateNotifier({ pkg })
@@ -24,6 +25,13 @@ program
     console.log(src,dist)
     // let { source } = program.opts()
       // require('./script/hls')(type)
+  })
+
+program
+  .command('qr <url> [size]')
+  .description('generate qrcode')
+  .action((url, size) => {
+    qrCode.genQrCode(url, size)
   })
 
 
