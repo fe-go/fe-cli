@@ -4,7 +4,7 @@ const path = require('path')
 const downloadTemplate = function(cwd, target, branch) {
   shell.exec('git init', { cwd })
   shell.exec(
-    'git remote add -f origin ssh://git@git.sankuai.com/cube/cube-cli.git',
+    'git remote add -f origin ssh://git@git.xxxx.com/xxx/xxx.git',
     {
       cwd
     }
