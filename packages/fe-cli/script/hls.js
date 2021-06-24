@@ -9,12 +9,17 @@ const ora = require('ora')
 module.exports = (src, dist) => {
   // https://github.com/fluent-ffmpeg/node-fluent-ffmpeg/blob/master/examples/livertmp2hls.js
   // make sure you set the correct path to your video file
-  if(exec('which ffmpeg').toString().includes('not found')){
+  try {
+    // 没有 ffmpeg 直接抛错  
+    exec('which ffmpeg')
+  } catch (error) {
     console.log('请确保已经安装 ffmpeg')
     console.log('mac 推荐通过 homebrew 安装')
     console.log('$ brew install ffmpeg ')
-    process.exit(0)
+    // console.log(error.toString())
+    process.exit(0) 
   }
+ 
   const sourcePath = path.resolve(src)
   const outputPath = path.resolve(dist, `${path.parse(src).name}.m3u8`)
   fs.ensureDirSync(path.resolve(dist))
