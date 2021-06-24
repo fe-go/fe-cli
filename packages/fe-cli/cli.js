@@ -19,12 +19,12 @@ program
   // .option('--type <string>', '编译类型 dev,build,prepub,publish,test')
 
 program
-  .command('hls <src> [dist]')
+  .command('hls <src> <dist>')
   .description('cube 编译')
   .action(async (src,dist) => {
     console.log(src,dist)
     // let { source } = program.opts()
-      // require('./script/hls')(type)
+      require('./script/hls')(src,dist)
   })
 
 program

@@ -27,6 +27,10 @@
   "homepage": "https://github.com/advence-liz/fe-cli#readme",
   "dependencies": {
     "commander": "^7.2.0",
+    "fluent-ffmpeg": "^2.1.2",
+    "fs-extra": "^10.0.0",
+    "ora": "^5.4.1",
+    "single-line-log": "^1.1.2",
     "update-notifier": "^5.1.0"
   }
 }
