@@ -13,25 +13,31 @@ if (notifier.update) {
 
 program
   .version(pkg.version, '-v, --version', 'version')
-  // .option('--name <string>', '新生成组件的名称')
-  // .option('-p, --packages [value]', '新生成monorepo组件')
-  // .option('--type <string>', '编译类型 dev,build,prepub,publish,test')
+  .option('--code', '使用 vscode 展示 diff')
+// .option('-p, --packages [value]', '新生成monorepo组件')
+// .option('--type <string>', '编译类型 dev,build,prepub,publish,test')
 
 program
   .command('hls <src> <dist>')
-  .description('cube 编译')
-  .action(async (src,dist) => {
-    console.log(src,dist)
-    // let { source } = program.opts()
-      require('./script/hls')(src,dist)
+  .description('视频切片')
+  .action(async (src, dist) => {
+    console.log(src, dist)
+    require('./script/hls')(src, dist)
   })
 
+program
+  .command('diff <file1> <file2>')
+  .description('展示文件 diff')
+  .action(async (one, other) => {
+    require('./script/diff')(one, other, program.opts())
+  })
 
-program.on('--help', function() {
+program.on('--help', function () {
   console.log('')
   console.log('Examples:')
-  console.log('  $ cube create')
-  
+  console.log('  $ fe diff file1 file2')
+  console.log('  $ fe diff file1 file2 --code')
+  console.log('  $ fe hls xxx.mp4 dist')
 })
 
 try {
