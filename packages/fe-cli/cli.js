@@ -3,8 +3,6 @@
 const program = require('commander')
 const updateNotifier = require('update-notifier')
 const pkg = require('./package.json')
-const getQrcode = require('./lib/getQrcode')
-const getIPAddress = require('./lib/getIpAddress')
 require('./lib/checkNodeVersion')
 
 const notifier = updateNotifier({ pkg })
@@ -16,6 +14,7 @@ if (notifier.update) {
 program
   .version(pkg.version, '-v, --version', 'version')
   .option('--code', '使用 vscode 展示 diff')
+  .option('-S, --small', 'small qrcode size')
 // .option('-p, --packages [value]', '新生成monorepo组件')
 // .option('--type <string>', '编译类型 dev,build,prepub,publish,test')
 
@@ -36,14 +35,9 @@ program
 
 program
   .command('qr <url>')
-  .option('-S, --small', 'small qrcode size')
   .description('generate qrcode')
-  .action((url, options) => {
-    if (options.small) {
-      getQrcode(url, true)
-    } else {
-      getQrcode(url)
-    }
+  .action(url => {
+    require('./script/qrcode')(url, program.opts())
   })
 
 // get local public IP address
@@ -51,7 +45,7 @@ program
   .command('IP')
   .description('get local public IP address')
   .action(() => {
-    console.log(getIPAddress())
+    console.log(require('./script/ipAddress')())
   })
 
 program.on('--help', function () {
@@ -60,6 +54,8 @@ program.on('--help', function () {
   console.log('  $ fe diff file1 file2')
   console.log('  $ fe diff file1 file2 --code')
   console.log('  $ fe hls xxx.mp4 dist')
+  console.log('  $ fe qr URL')
+  console.log('  $ fe qr URL -S/--small')
 })
 
 try {
