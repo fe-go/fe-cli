@@ -3,7 +3,8 @@
 const program = require('commander')
 const updateNotifier = require('update-notifier')
 const pkg = require('./package.json')
-const qrCode = require('./lib/qrcode')
+const getQrcode = require('./lib/getQrcode')
+const getIPAddress = require('./lib/getIpAddress')
 require('./lib/checkNodeVersion')
 
 const notifier = updateNotifier({ pkg })
@@ -28,10 +29,24 @@ program
   })
 
 program
-  .command('qr <url> [size]')
+  .command('qr <url>')
+  .option('-S, --small', 'small qrcode size')
   .description('generate qrcode')
-  .action((url, size) => {
-    qrCode.genQrCode(url, size)
+  .action( (url, options) => {
+    if (options.small) {
+      getQrcode(url, true)
+    } else {
+      getQrcode(url)
+    }
+    
+  })
+
+// get local public IP address
+program
+  .command('IP')
+  .description('get local public IP address')
+  .action( () => {
+    console.log(getIPAddress())
   })
 
 
