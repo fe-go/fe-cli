@@ -6,7 +6,7 @@ const { blue, red, green } = require('../lib/color')
 const Progressbar = require('../lib/progressbar')
 const ora = require('ora')
 
-module.exports = (src, dist) => {
+module.exports = (src, outdir) => {
   // https://github.com/fluent-ffmpeg/node-fluent-ffmpeg/blob/master/examples/livertmp2hls.js
   // make sure you set the correct path to your video file
   try {
@@ -21,8 +21,8 @@ module.exports = (src, dist) => {
   }
  
   const sourcePath = path.resolve(src)
-  const outputPath = path.resolve(dist, `${path.parse(src).name}.m3u8`)
-  fs.ensureDirSync(path.resolve(dist))
+  const outputPath = path.resolve(outdir, `${path.parse(src).name}.m3u8`)
+  fs.ensureDirSync(path.resolve(outdir))
   const spinner = ora('fe hls').start()
   const pb = new Progressbar()
   ffmpeg(sourcePath, { timeout: 432000 })

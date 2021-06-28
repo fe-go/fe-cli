@@ -19,11 +19,11 @@ program
 // .option('--type <string>', '编译类型 dev,build,prepub,publish,test')
 
 program
-  .command('hls <src> <dist>')
+  .command('hls <src> <outdir>')
   .description('视频切片')
-  .action(async (src, dist) => {
-    console.log(src, dist)
-    require('./script/hls')(src, dist)
+  .action(async (src, outdir) => {
+    console.log(src, outdir)
+    require('./script/hls')(src, outdir)
   })
 
 program
@@ -53,7 +53,7 @@ program.on('--help', function () {
   console.log('Examples:')
   console.log('  $ fe diff file1 file2')
   console.log('  $ fe diff file1 file2 --code')
-  console.log('  $ fe hls xxx.mp4 dist')
+  console.log('  $ fe hls xxx.mp4 outdir')
   console.log('  $ fe qr URL')
   console.log('  $ fe qr URL -S/--small')
 })
