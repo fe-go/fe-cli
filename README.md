@@ -8,7 +8,7 @@
   - [安装](#安装)
   - [视频切片](#视频切片)
   - [展示文件diff](#展示文件diff)
-  - [获取本机公网IP](#获取本机公网ip)
+  - [获取本机IP](#获取本机ip)
   - [URL转qrcode](#url转qrcode)
 
 ## 安装
@@ -16,7 +16,11 @@
 `$ npm i @fe-go/fe-cli -g`
 
 ## 视频切片
-当视频体积太大，在慢网速的情况下，往往可能需要很长时间加载，通过视频切片可以将视频切分成多份，从而缩短视频加载的时间。
+基于 [HTTP Live Streaming](https://zh.wikipedia.org/wiki/HTTP_Live_Streaming)  通过 ffmpeg 将视频分割为多份以达到视频秒开的目的。
+
+前提本机需要安装 ffmpeg （70多M实在难以内置） 推荐通过 homebrew 安装 
+- 安装 homebrew `$ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+- 安装 ffmpeg `$ brew install ffmpeg`
 
 `fe hls <file.mp4> <outdir>`
 
@@ -30,9 +34,10 @@
 ## 展示文件diff
 展示两个文件间的diff
 
-`$ fe diff <file1> <file2>`
+`$ fe diff <file1> <file2> --code`
 
-当电脑中已经安装了vscode并且code命令已经添加到环境变量中就可以利用选项`--code`来选择在vscode比较diff
+- `code` 当电脑中已经安装了vscode并且code命令已经添加到环境变量中就可以使用vscode显示文件DIFF。
+
 
 示例：
 
@@ -63,12 +68,12 @@ function example(firstName, lastName) {
 
 `fe diff file1 file2 --code`
 
-## 获取本机公网IP
-通过`fe IP`命令可以获取本机公网IP
+## 获取本机IP
+通过`fe IP`命令可以获取本机IP
 
 ## URL转qrcode
 
-`fe qr <URL> -S/--small`
+`fe qr <URL> --small`
 
 * `<URL>` 被转换的URL地址
 * `-S/--small` 可选值表示得到小尺寸的二维码

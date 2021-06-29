@@ -29,6 +29,7 @@ program
 program
   .command('diff <file1> <file2>')
   .description('展示文件 diff')
+  .option('--code, --diff_mode <mode>', '通过 vscode 展示 DIFF', false)
   .action(async (one, other) => {
     require('./script/diff')(one, other, program.opts())
   })
@@ -36,7 +37,7 @@ program
 program
   .command('qr <url>')
   .description('generate qrcode')
-  .action(url => {
+  .action((url) => {
     require('./script/qrcode')(url, program.opts())
   })
 

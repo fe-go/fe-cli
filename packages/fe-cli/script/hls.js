@@ -10,16 +10,16 @@ module.exports = (src, outdir) => {
   // https://github.com/fluent-ffmpeg/node-fluent-ffmpeg/blob/master/examples/livertmp2hls.js
   // make sure you set the correct path to your video file
   try {
-    // 没有 ffmpeg 直接抛错  
+    // 没有 ffmpeg 直接抛错
     exec('which ffmpeg')
   } catch (error) {
     console.log('请确保已经安装 ffmpeg')
     console.log('mac 推荐通过 homebrew 安装')
     console.log('$ brew install ffmpeg ')
     // console.log(error.toString())
-    process.exit(0) 
+    process.exit(0)
   }
- 
+
   const sourcePath = path.resolve(src)
   const outputPath = path.resolve(outdir, `${path.parse(src).name}.m3u8`)
   fs.ensureDirSync(path.resolve(outdir))
