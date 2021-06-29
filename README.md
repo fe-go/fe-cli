@@ -1,10 +1,10 @@
 # fe-cli
 
+一个 cli 工具，集成各种前端开发需要用的功能，持续迭代中!!!,欢迎贡献想法或者功能。
+
 简体中文 ｜ [English](./README-en_US.md)
 
-[fe-cli](https://github.com/fe-go/fe-cli)
-
-- [fe-cli](#fe-cli)
+[目录](#fe-cli)
   - [安装](#安装)
   - [视频切片](#视频切片)
   - [展示文件diff](#展示文件diff)
