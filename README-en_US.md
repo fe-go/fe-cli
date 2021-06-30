@@ -16,7 +16,12 @@
 `$ npm i @fe-go/fe-cli -g`
 
 ## view video immediately
-In the case of slow Internet, it is usually to load a video for a long time, if the size of video is large. Spliting video into parts can help xxx to load a video clip rather than the whole video at the beginning. 
+Based on [HTTP Live Streaming](https://zh.wikipedia.org/wiki/HTTP_Live_Streaming), split the video into mutiple parts through `ffmpeg`, in order to the purpose of opening the video in seconds. 
+
+Prerequisites ffmpeg needs to be installed on this machine and recommend to install by `homebrew`
+
+- install `homebrew`: `$ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+- install `ffmpeg`: `$ brew install ffmpeg`
 
 `fe hls <file.mp4> <outdir>`
 
