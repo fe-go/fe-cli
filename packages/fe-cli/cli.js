@@ -49,6 +49,15 @@ program
     console.log(require('./script/ipAddress')())
   })
 
+program
+  .command('iconfont <src> [dest]')
+  .description(
+    '去掉iconfont中冗余的引用资源,将需要引用的 .ttf 资源自动转化为 base64,简化 iconfont 引入方式。'
+  )
+  .action((src, dest = '.') => {
+    require('./script/iconfont')(src, dest, program.opts())
+  })
+
 program.on('--help', function () {
   console.log('')
   console.log('Examples:')

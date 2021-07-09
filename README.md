@@ -68,8 +68,38 @@ function example(firstName, lastName) {
 
 ```
 
-`fe diff file1 file2 --code`
+`$ fe diff file1 file2 --code`
+## iconfont 转化
 
+`$ fe iconfont <src> [dest] ` 
+- `src` `iconfont` 源文件目录
+- `dest` 输出路径
+
+去掉iconfont中冗余的引用资源,将需要引用的`.ttf`资源自动转化为`base64`,简化 iconfont 引入方式。
+
+转化前：`@font-face`如下依照浏览器兼容情况我们只要保留`ttf`就ok了。
+
+```less
+@font-face {font-family: "iconfont";
+  src: url('iconfont.eot?t=1557322756059'); /* IE9 */
+  src: url('iconfont.eot?t=1557322756059#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('data:application/x-font-woff2;charset=utf-8;base64,........') format('woff2'),
+  url('iconfont.woff?t=1557322756059') format('woff'),
+  url('iconfont.ttf?t=1557322756059') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
+  url('iconfont.svg?t=1557322756059#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+```
+
+转化后：如下去掉冗余部分，并将`ttf`转为`base64`
+
+```less
+@font-face { 
+  font-family: "iconfont";
+  src: url('data:font/ttf;charset=utf-8;base64,....') format('truetype');
+  }
+
+```
 ## 获取本机IP
 通过`fe IP`命令可以获取本机IP
 
