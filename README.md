@@ -1,4 +1,5 @@
 # fe-cli
+[![](https://badge.fury.io/js/fe-cli.svg)](http://badge.fury.io/js/fe-cli)
 
 一个 cli 工具，集成各种前端开发需要用的功能，持续迭代中!!!,欢迎贡献想法或者功能。
 

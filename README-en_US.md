@@ -1,5 +1,7 @@
 # fe-cli
 
+[![](https://badge.fury.io/js/fe-cli.svg)](http://badge.fury.io/js/fe-cli)
+
 [简体中文](./README.md) ｜ English(./README-en_US.md)
 
 [fe-cli](https://github.com/fe-go/fe-cli)
