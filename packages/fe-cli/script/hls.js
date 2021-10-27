@@ -19,7 +19,10 @@ module.exports = (src, outdir) => {
     // console.log(error.toString())
     process.exit(0)
   }
-
+  if (escape(src).indexOf('%u') > 0) {
+    console.log(red(`请确保文件名 ${src} 不包含中文否则上传会失败`))
+    process.exit(0)
+  }
   const sourcePath = path.resolve(src)
   const outputPath = path.resolve(outdir, `${path.parse(src).name}.m3u8`)
   fs.ensureDirSync(path.resolve(outdir))
