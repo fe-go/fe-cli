@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const program = require('commander')
+const { error } = require('qrcode-terminal')
 const updateNotifier = require('update-notifier')
 const pkg = require('./package.json')
 require('./lib/checkNodeVersion')
@@ -58,6 +59,13 @@ program
     require('./script/iconfont')(src, dest, program.opts())
   })
 
+program
+  .command('tinypng <src> [dest]')
+  .description('压缩指定目录下的 .png .jpg .jpeg 文件')
+  .action((src, dest = '.') => {
+    require('./script/tinypng')(src, dest, program.opts())
+  })
+
 program.on('--help', function () {
   console.log('')
   console.log('Examples:')
@@ -66,12 +74,17 @@ program.on('--help', function () {
   console.log('  $ fe hls xxx.mp4 outdir')
   console.log('  $ fe qr URL')
   console.log('  $ fe qr URL -S/--small')
+  console.log('  $ fe tinypng images outdir')
+  console.log('  $ fe tinypng images')
+  console.log('  $ fe tinypng xx.png outdir')
 })
 
 try {
   program.parse(process.argv)
 } catch (err) {
-  program.outputHelp()
+  // 逻辑执行错误此处也会抛出
+  console.log(err)
+  // program.outputHelp()
 }
 
 if (!process.argv.slice(2).length) {

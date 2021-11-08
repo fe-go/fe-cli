@@ -8,6 +8,7 @@
 [目录](#fe-cli)
   - [安装](#安装)
   - [视频切片](#视频切片)
+  - [图片压缩](#图片压缩)
   - [展示文件diff](#展示文件diff)
   - [获取本机IP](#获取本机ip)
   - [URL转qrcode](#url转qrcode)
@@ -33,6 +34,20 @@
 示例:
 
 `fe hls test.mp4 ./`
+
+## 图片压缩
+
+压缩 `.png` `.jpg` `.jpeg` 图片,借鉴[super-tinypng](https://github.com/advence-liz/super-tinypng) 调用[tinypng](https://tinify.cn/) 进行图片压缩。
+
+`$ fe tinypng <src> [dest]`
+
+- `src` 压缩图片所在目录或者具体文件路径，自动寻找目录中 `.png` `.jpg` `.jpeg` 图片(`src/*.{jpg,png.jpeg}`)，但是不进行深层遍历。
+- `dest` 图片输出目录，可选参数默认值`.` ，当`dest` 为默认值时为了防止直接覆盖源文件，后缀名前会拼接`.min`
+
+示例：
+- `$ fe tinypng images outdir`
+- `$ fe tinypng images`
+- `$ fe tinypng xx.png outdir`
 
 ## 展示文件diff
 展示两个文件间的diff
