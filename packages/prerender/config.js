@@ -1,9 +1,17 @@
 module.exports = {
   cookies: [],
-  localStorage: [],
+  localStorage: {},
   selector: [], // 要移除的 css 选择器
-  scripts: [], // 要注入的脚步
+  scripts: [
+    function(x, y) {
+      console.log(x + y)
+    }(1, 2),
+    function(x, y) {
+      console.log(x * y)
+    }(2, 3)
+  ], // 要注入的脚本
   whiteList: [], // 请求白名单
+  rootCss: 'app',
   emulate: {
     name: 'iPhone 6 Plus landscape',
     userAgent:

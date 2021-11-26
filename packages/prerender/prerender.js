@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer')
 const config = require('./config.js')
+const script = require('./scriptType')
 // if (env === 'local') {
 //     return await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
 // }
@@ -8,39 +9,53 @@ const config = require('./config.js')
 // });
 
 class Prerender {
-  constructor() {
-    this.init()
+  constructor(url) {
+    this.init(url)
   }
-  async init() {
+  async init(url) {
     this.browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] })
     this.page = await this.browser.newPage()
-    this.render('http://cube.hfe.test.meituan.com/awp/hfe/game/test/1a921f21/index.html')
+    this.render(url)
+  }
+  async setCookie() {
+    config.cookies.forEach(item => {
+      await this.page.setCookie(item)
+    })
+  }
+  async setLocalStorage(url) {
+    await this.page.goto(url)
+    await page.evaluate(() => {
+      Object.keys(config.localStorage).forEach(key => {
+        localStorage.setItem(key, config.localStorage[key])
+      })
+    });
+    await this.page.goto(url)
   }
   /**
    * 获取页面预渲染内容与快照
    * @param  {String} url    [页面地址]
    * @return {Object}        [预渲染的Dom字符串、样式及其快照地址]
    */
-  async render(url, city = 1) {
-    let realUrl = url
+  async render(url) {
+    let realUrl = url;
     try {
-      realUrl = decodeURIComponent(url)
+      realUrl = decodeURIComponent(url);
     } catch (e) {
-      ctx.logger.error('Puppeteer prerender decodeURIComponent url error:' + e.message, url)
-      await page.close()
-      await this.browser.close()
-      return app.end(1, { errorMsg: ['Puppeteer prerender decodeURIComponent url error:' + e.message] }, 'fail')
+      console.error(`Puppeteer prerender decodeURIComponent url error: ${e.message}, ${ulr}`);
+      await this.page.close();
+      await this.browser.close();
     }
 
-    let dom = ''
-    let style = ''
-    let remainingStyle = ''
-    let picture = ''
+    let dom = '', style = '', remainingStyle = '', picture = '';
     try {
+      // 设置cookies
+      this.setCookie();
       // 启动页面渲染模拟器
-      await this.page.emulate(config.prerenderEmulate)
+      await this.page.emulate(config.prerenderEmulate);
+      // 设置页面localStorage
+      this.setLocalStorage(realUrl);
       // 设置请求过滤器
-      // this.page.setRequestInterceptor(this);
+      this.page.setRequestInterceptor(this);
       // 同时开启统计css使用率及请求过滤器
       await Promise.all([
         this.page.coverage.startCSSCoverage()
@@ -50,22 +65,27 @@ class Prerender {
       await new Promise(async (resolve, reject) => {
         this.page.on('load', () => resolve())
         this.page.on('error', () => reject())
-        await Promise.race([this.page.goto(realUrl), new Promise((x) => setTimeout(x, 40000))])
+        await Promise.race([
+          this.page.goto(realUrl), 
+          new Promise((x) => setTimeout(x, 40000))
+        ])
       })
-      // 运行规则
-      // await this.page.runRule(this);
+      // 运行脚本
+      const script = new script(this.page, config)
+      script.runScript()
+      
       // 获取首屏使用的css
       const cssCoverage = await this.page.coverage.stopCSSCoverage()
       const { usedStyle, unUsedStyle } = this.getUsedCss(cssCoverage)
       const keyframesStyle = this.collectKeyframes(unUsedStyle)
-      style = usedStyle + keyframesStyle
+      style = usedStyle + keyframesStyle;
       remainingStyle = unUsedStyle
       // 截取首屏截图
       picture = await this.getScreenshot(this)
       // 获取首屏DOM
-      dom = await this.page.$eval('.block-container', (el) => el.outerHTML)
+      dom = await this.page.$eval(config.rootCss, el => el.outerHTML);
     } catch (e) {
-      console.error('Puppeteer prerender goto page err:' + e.message, url)
+      console.error(`Puppeteer prerender goto page err: ${e.message} ${url} `)
       await this.page.close()
       await this.browser.close()
     }
@@ -146,6 +166,38 @@ class Prerender {
     }
     return keyframesStyle
   }
+
+  /**
+   * 为页面设置请求拦截器
+   * @param {Page} page 浏览器页面实例
+   */
+  setRequestInterceptor () {
+    this.page.on('request', request => {
+        const reqUrl = request.url();
+        const hit = () => config.whiteList.findIndex(path => reqUrl.indexOf(path) > -1) > -1;
+        if (reqUrl.indexOf('/topcube/api/toc/base/getLoginInfo') > -1) {
+            // 绕过强制登录
+            request.respond({
+              status: 200,
+              contentType: 'application/json',
+              body: JSON.stringify({
+                  code: 0,
+                  msg: '返回成功!',
+                  data: userInfo
+              })
+            });
+        } else if (reqUrl.indexOf('//cube.meituan.net/hfe/block/superagent') > -1) {
+            // 使接口请求处于loading状态
+            request.abort();
+        } else if (hit()) {
+            // 命中白名单
+            request.continue();
+        } else {
+            request.abort();
+        }
+    });
+  }
+  
 }
 
 module.exports = Prerender
