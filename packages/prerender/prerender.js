@@ -1,6 +1,8 @@
 const puppeteer = require('puppeteer')
 const config = require('./config.js')
-const script = require('./scriptType')
+const fs = require("fs");
+
+const { ScriptManager, CssRemoveScript, CustomizeScript, RemoveHiddenElement } = require('./scriptType')
 // if (env === 'local') {
 //     return await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
 // }
@@ -9,22 +11,23 @@ const script = require('./scriptType')
 // });
 
 class Prerender {
-  constructor(url) {
-    this.init(url)
+  constructor(url, config) {
+    this.config = config;
+    this.init(url);
   }
   async init(url) {
     this.browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] })
     this.page = await this.browser.newPage()
     this.render(url)
   }
-  async setCookie() {
-    config.cookies.forEach(item => {
+  setCookie() {
+    config.cookies.forEach(async item => {
       await this.page.setCookie(item)
     })
   }
   async setLocalStorage(url) {
     await this.page.goto(url)
-    await page.evaluate(() => {
+    await this.page.evaluate(() => {
       Object.keys(config.localStorage).forEach(key => {
         localStorage.setItem(key, config.localStorage[key])
       })
@@ -49,14 +52,32 @@ class Prerender {
     let dom = '', style = '', remainingStyle = '', picture = '';
     try {
       // 设置cookies
-      this.setCookie();
+      if (config.cookies.length > 0) this.setCookie();
       // 启动页面渲染模拟器
       await this.page.emulate(config.prerenderEmulate);
       // 设置页面localStorage
-      this.setLocalStorage(realUrl);
+      if (JSON.stringify(config.localStorage) !== '{}') this.setLocalStorage(realUrl);
       // 设置请求过滤器
-      this.page.setRequestInterceptor(this);
+      // this.setRequestInterceptor(this);
       // 同时开启统计css使用率及请求过滤器
+
+      const scriptManager = new ScriptManager()
+      let cssRemoveScript, customizeScript, func = []
+      if (config.selector.length > 0) {
+        cssRemoveScript = new CssRemoveScript(this.page, config.selector);
+        func.push(cssRemoveScript)
+      }
+      if (config.scripts.length > 0) {
+        customizeScript = new CustomizeScript(this.page, config.scripts);
+        func.push(customizeScript)
+      }
+      let removeHiddenElement = new RemoveHiddenElement(this.page)
+      func.push(removeHiddenElement)
+      if (func.length > 0) {
+        scriptManager.add(func)
+        scriptManager.run()
+      }
+
       await Promise.all([
         this.page.coverage.startCSSCoverage()
         // this.page.setRequestInterception(true)
@@ -70,9 +91,23 @@ class Prerender {
           new Promise((x) => setTimeout(x, 40000))
         ])
       })
+
       // 运行脚本
-      const script = new script(this.page, config)
-      script.runScript()
+      // const scriptManager = new ScriptManager()
+      // let cssRemoveScript, customizeScript, func = []
+      // if (config.selector.length > 0) {
+      //   cssRemoveScript = new CssRemoveScript(this.page, config.selector);
+      //   func.push(cssRemoveScript)
+      // }
+      // if (config.scripts.length > 0) {
+      //   customizeScript = new CustomizeScript(this.page, config.scripts);
+      //   func.push(customizeScript)
+      // }
+      
+      // if (func.length > 0) {
+      //   scriptManager.add(func)
+      //   scriptManager.run()
+      // }
       
       // 获取首屏使用的css
       const cssCoverage = await this.page.coverage.stopCSSCoverage()
@@ -89,6 +124,7 @@ class Prerender {
       await this.page.close()
       await this.browser.close()
     }
+
     // 关闭页面及浏览器
     await this.page.close()
     await this.browser.close()
@@ -99,9 +135,8 @@ class Prerender {
     //     return app.end(3, { errorMsg: ['Prerender dom is not compliant:' + url] }, 'fail');
     // }
 
-    // return app.end(0, { dom: dom, style, remaining_style: remainingStyle, picture }, 'success');
     const res = { dom: dom, style, remaining_style: remainingStyle, picture }
-    console.log(res)
+    // console.log(res)
     return res
   }
 
@@ -145,9 +180,9 @@ class Prerender {
     }
     const screenshotBuffer = await this.page.screenshot({ path: 'screenshot.jpeg', type: 'jpeg', quality: 100, clip })
     let screenshot = ''
-    // if (screenshotBuffer.length > 0) {
-    //   //   screenshot = await ctx.service.keeper.upload(screenshotBuffer)
-    // }
+    if (screenshotBuffer.length > 0) {
+        screenshot = fs.writeFileSync("firstScreen.jpg", screenshotBuffer);
+    }
     return screenshot
   }
 

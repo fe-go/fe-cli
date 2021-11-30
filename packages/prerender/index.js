@@ -1,3 +1,3 @@
 const Prerender = require('./prerender')
 
-new Prerender()
+new Prerender('https://i.meituan.com/awp/hfe/game/425c90b6/index.html')

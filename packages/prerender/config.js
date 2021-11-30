@@ -1,17 +1,26 @@
 module.exports = {
   cookies: [],
   localStorage: {},
-  selector: [], // 要移除的 css 选择器
-  scripts: [
-    function(x, y) {
-      console.log(x + y)
-    }(1, 2),
-    function(x, y) {
-      console.log(x * y)
-    }(2, 3)
-  ], // 要注入的脚本
+  selector: [
+    '.coin-area__mask',
+    '.info-pop-wrap',
+    '.tab__item',
+    '.block-titlebar-subscribe',
+    '.coin-coupon__count--number', 
+    '.coin-area__hd__login', 
+    '.coin-area__hd__desc',
+    '.coin-area__hd__login-btn',
+    '.coin-area__today__content__count', 
+    '.coin-area__tomorrow__count',
+    '.coin-coupon__amount',
+    '.coupon__left',
+    '.coupon__divider',
+    '.coupon__right',
+    '.coupon__subscribe'
+  ], // 要移除的 css 选择器
+  scripts: [], // 要注入的脚本
   whiteList: [], // 请求白名单
-  rootCss: 'app',
+  rootCss: '.block-container',
   emulate: {
     name: 'iPhone 6 Plus landscape',
     userAgent:
