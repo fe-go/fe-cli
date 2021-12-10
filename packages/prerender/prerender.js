@@ -61,6 +61,21 @@ class Prerender {
       // this.setRequestInterceptor(this);
       // 同时开启统计css使用率及请求过滤器
 
+      await Promise.all([
+        this.page.coverage.startCSSCoverage()
+        // this.page.setRequestInterception(true)
+      ])
+      // 页面跳转并等待页面onload
+      await new Promise(async (resolve, reject) => {
+        this.page.on('load', () => resolve())
+        this.page.on('error', () => reject())
+        await Promise.race([
+          this.page.goto(realUrl), 
+          new Promise((x) => setTimeout(x, 40000))
+        ])
+      })
+
+      // 运行脚本
       const scriptManager = new ScriptManager()
       let cssRemoveScript, customizeScript, func = []
       if (config.selector.length > 0) {
@@ -77,37 +92,6 @@ class Prerender {
         scriptManager.add(func)
         scriptManager.run()
       }
-
-      await Promise.all([
-        this.page.coverage.startCSSCoverage()
-        // this.page.setRequestInterception(true)
-      ])
-      // 页面跳转并等待页面onload
-      await new Promise(async (resolve, reject) => {
-        this.page.on('load', () => resolve())
-        this.page.on('error', () => reject())
-        await Promise.race([
-          this.page.goto(realUrl), 
-          new Promise((x) => setTimeout(x, 40000))
-        ])
-      })
-
-      // 运行脚本
-      // const scriptManager = new ScriptManager()
-      // let cssRemoveScript, customizeScript, func = []
-      // if (config.selector.length > 0) {
-      //   cssRemoveScript = new CssRemoveScript(this.page, config.selector);
-      //   func.push(cssRemoveScript)
-      // }
-      // if (config.scripts.length > 0) {
-      //   customizeScript = new CustomizeScript(this.page, config.scripts);
-      //   func.push(customizeScript)
-      // }
-      
-      // if (func.length > 0) {
-      //   scriptManager.add(func)
-      //   scriptManager.run()
-      // }
       
       // 获取首屏使用的css
       const cssCoverage = await this.page.coverage.stopCSSCoverage()
@@ -119,6 +103,8 @@ class Prerender {
       picture = await this.getScreenshot(this)
       // 获取首屏DOM
       dom = await this.page.$eval(config.rootCss, el => el.outerHTML);
+      fs.writeFileSync("out.html", dom);
+      fs.writeFileSync("out.css", style)
     } catch (e) {
       console.error(`Puppeteer prerender goto page err: ${e.message} ${url} `)
       await this.page.close()
@@ -134,7 +120,7 @@ class Prerender {
     //     ctx.logger.error('Prerender dom is not compliant', url);
     //     return app.end(3, { errorMsg: ['Prerender dom is not compliant:' + url] }, 'fail');
     // }
-
+    // console.log(style)
     const res = { dom: dom, style, remaining_style: remainingStyle, picture }
     // console.log(res)
     return res

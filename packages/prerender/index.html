@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en" style="font-size: 100px">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./out1.css">
+    <script>
+      !(function (e) {
+        var d = document.documentElement;
+        var ua = navigator.userAgent;
+        var b = window.devicePixelRatio;
+        b = 3 <= b ? 3 : 2 <= b ? 2 : 1;
+        var a = 1 / b;
+        var init = 1 / b;
+        // 兼容部分安卓 webview viewport 特异情况
+        if (/Android/.test(ua)) {
+          init = 1;
+        }
+        var c = document.querySelector('meta[name="viewport"]');
+        a =
+          "initial-scale=" +
+          init +
+          ",maximum-scale=" +
+          a +
+          ",minimum-scale=" +
+          a +
+          ",user-scalable=no,width=device-width,viewport-fit=cover";
+
+        c
+          ? c.setAttribute("content", a)
+          : document.write('<meta name="viewport" content="' + a + '"/>');
+        c = function () {
+          var a = d.clientWidth;
+          d.style.fontSize = (a / e) * 100 + "px";
+        };
+        c();
+        window.addEventListener("resize", c);
+      })(750);
+      // owl
+    </script>
+  </head>
+  <body>
+    <div data-v-83a42216="" class="block-container">
+      <div data-v-83a42216="" class="info-pop"></div>
+      <!---->
+      <div data-v-55b16ee6="" data-v-83a42216="">
+        <div data-v-55b16ee6="" class="home__container" style="height: 100vh">
+          <div data-v-55b16ee6="" class="home__safe-top"></div>
+          <div
+            data-v-43f9dada=""
+            data-v-55b16ee6=""
+            style="height: 1.4rem"
+          ></div>
+          <div data-v-2d632a9b="" data-v-55b16ee6="">
+            <nav
+              data-v-2d632a9b=""
+              id="shareNav"
+              class="block-titlebar"
+              style="z-index: 999; line-height: 0.9rem; top: 0.53rem"
+            >
+              <div
+                data-v-2d632a9b=""
+                id="shareNavArrow"
+                class="block-titlebar-arrow"
+                style="height: 0.9rem; margin-left: 0.11rem; z-index: 1000"
+              >
+                <div
+                  data-v-2d632a9b=""
+                  class="block-titlebar-arrow-img"
+                  style="
+                    border-left: 0.033rem solid rgb(255, 255, 255);
+                    border-bottom: 0.033rem solid rgb(255, 255, 255);
+                  "
+                ></div>
+              </div>
+              <div
+                data-v-2d632a9b=""
+                class="block-titlebar-title"
+                style="opacity: 1; height: 0.9rem; font-size: 0.4rem"
+              >
+                <img
+                  data-v-2d632a9b=""
+                  src="https://p0.meituan.net/travelcube/bb03e7e3ae745fe8d3c4ab3d52494bf34709.png"
+                  class="block-titlebar-title-img"
+                />
+              </div>
+              <div
+                data-v-2d632a9b=""
+                class="block-titlebar-right-share"
+                style="z-index: 999; line-height: 0.9rem; right: 0.11rem"
+              >
+                <span
+                  data-v-2d632a9b=""
+                  class="shareIconFont icon-huaban iconfont"
+                  style="font-size: 0.56rem"
+                ></span>
+              </div>
+            </nav>
+          </div>
+          <div data-v-55b16ee6="" alt="" srcset="" class="top-img"></div>
+          <div data-v-55b16ee6="" class="calendar">
+            <div
+              data-v-64277e40=""
+              data-v-55b16ee6=""
+              class="tab"
+              date_title="12月9日"
+            >
+              <div data-v-64277e40="" class="tab__date"></div>
+              <div data-v-64277e40="" class="tab__btn">
+                <img
+                  data-v-64277e40=""
+                  src="https://p0.meituan.net/travelcube/8f3b7cd03f0d03f7864fe25809e80adc5399.png"
+                  alt=""
+                  class="tab__image"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            data-v-43f9dada=""
+            data-v-55b16ee6=""
+            style="height: 0.3rem"
+          ></div>
+          <div data-v-55b16ee6="" class="home__wrapper">
+            <div data-v-55b16ee6="" class="home__title">
+              <div data-v-55b16ee6="" class="home__title--image">
+                <img
+                  data-v-55b16ee6=""
+                  src="https://p0.meituan.net/travelcube/88046b5b9d9f9ac83833c88ae0a5b9ca5142.png"
+                  alt=""
+                />
+              </div>
+              <span
+                data-v-55b16ee6=""
+                class="home__subtitle"
+                style="
+                  position: absolute;
+                  right: 0.35rem;
+                  top: 0.16rem;
+                  color: rgb(204, 204, 204);
+                "
+                >规则</span
+              >
+            </div>
+            <div
+              data-v-43f9dada=""
+              data-v-55b16ee6=""
+              style="height: 0.11rem"
+            ></div>
+            <div data-v-2a18318c="" data-v-55b16ee6="" class="coin-area">
+              <div
+                data-v-2a18318c=""
+                class="coin-area__today--animate-up coin-area__today"
+              >
+                <div data-v-2a18318c="" class="coin-area__today__wrapper">
+                  <div data-v-2a18318c="" class="coin-area__today__content">
+                    <div
+                      data-v-2a18318c=""
+                      class="coin-area__today__content__tips"
+                    >
+                      最高
+                    </div>
+                    <div
+                      data-v-2a18318c=""
+                      class="coin-area__today__content__title"
+                    >
+                      今日可领
+                    </div>
+                    <div
+                      data-v-1567fd59=""
+                      data-v-2a18318c=""
+                      class="box"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+              <!---->
+              <!---->
+              <div
+                data-v-2a18318c=""
+                class="coin-area__drop coin-area__drop--animate"
+              ></div>
+              <div data-v-2a18318c="" class="coin-area__tomorrow">
+                <div data-v-2a18318c="" class="coin-area__tomorrow__title">
+                  明日待领
+                </div>
+              </div>
+              <div data-v-2a18318c="" class="coin-area__upper">
+                <div data-v-2a18318c="" class="coin-area__upper__coin">
+                  我的金币
+                </div>
+                <!---->
+              </div>
+              <div data-v-2a18318c="" class="coin-area__hd"></div>
+              <div data-v-2a18318c="" class="coin-area__bd">
+                <div data-v-2a18318c="" class="coin-area__content">
+                  <div data-v-2a18318c="" class="coin-redeem">
+                    <div data-v-2a18318c="" class="coin-redeem__title">
+                      金币兑换
+                    </div>
+                    <div data-v-2a18318c="" class="coin-redeem__subtitle">
+                      <span
+                        data-v-2a18318c=""
+                        class="coin-redeem__subtitle--ellipsis"
+                        >现金/神券限量抢兑</span
+                      >
+                      <img
+                        data-v-2a18318c=""
+                        src="https://p0.meituan.net/travelcube/e7f64eb67dc5d50faf82d0b34ed3d441234.png"
+                        alt=""
+                      />
+                    </div>
+                    <div
+                      data-v-2a18318c=""
+                      class="coin-redeem__exhibition__wrap"
+                    >
+                      <div data-v-2a18318c="" class="coin-redeem__exhibition">
+                        <div data-v-2a18318c="" class="outer">
+                          <div data-v-2a18318c="" class="left">
+                            <div
+                              data-v-27f43254=""
+                              data-v-2a18318c=""
+                              class="coin-coupon__wrap"
+                            >
+                              <div data-v-27f43254="" class="coin-coupon">
+                                <div
+                                  data-v-27f43254=""
+                                  class="coin-coupon__content"
+                                  style="
+                                    color: rgb(255, 255, 255);
+                                    background: url('https://p0.meituan.net/travelcube/c327dd7b909026161ec6e8c643993fbe6440.png')
+                                      0% 0% / 100% 100%;
+                                  "
+                                >
+                                  <div
+                                    data-v-27f43254=""
+                                    class="coin-coupon__count"
+                                  >
+                                    <span
+                                      data-v-27f43254=""
+                                      class="coin-coupon__money"
+                                      >￥</span
+                                    >
+                                  </div>
+                                  <div
+                                    data-v-27f43254=""
+                                    class="coin-coupon__desc"
+                                  >
+                                    现金
+                                  </div>
+                                </div>
+                                <div
+                                  data-v-27f43254=""
+                                  class="coin-coupon__amount"
+                                >
+                                  <img
+                                    data-v-27f43254=""
+                                    src="https://p0.meituan.net/travelcube/dc42765e1e9a9d66f3833402939008031011.png"
+                                    alt=""
+                                  />
+                                </div>
+                                <div
+                                  data-v-27f43254=""
+                                  class="coin-coupon__button"
+                                >
+                                  兑换
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              data-v-27f43254=""
+                              data-v-2a18318c=""
+                              class="coin-coupon__wrap"
+                            >
+                              <div data-v-27f43254="" class="coin-coupon">
+                                <div
+                                  data-v-27f43254=""
+                                  class="coin-coupon__content"
+                                  style="
+                                    color: rgb(255, 255, 255);
+                                    background: url('https://p0.meituan.net/travelcube/c327dd7b909026161ec6e8c643993fbe6440.png')
+                                      0% 0% / 100% 100%;
+                                  "
+                                >
+                                  <div
+                                    data-v-27f43254=""
+                                    class="coin-coupon__count"
+                                  >
+                                    <span
+                                      data-v-27f43254=""
+                                      class="coin-coupon__money"
+                                      >￥</span
+                                    >
+                                  </div>
+                                  <div
+                                    data-v-27f43254=""
+                                    class="coin-coupon__desc"
+                                  >
+                                    现金
+                                  </div>
+                                </div>
+                                <div
+                                  data-v-27f43254=""
+                                  class="coin-coupon__amount"
+                                >
+                                  <img
+                                    data-v-27f43254=""
+                                    src="https://p0.meituan.net/travelcube/dc42765e1e9a9d66f3833402939008031011.png"
+                                    alt=""
+                                  />
+                                </div>
+                                <div
+                                  data-v-27f43254=""
+                                  class="coin-coupon__button"
+                                >
+                                  兑换
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              data-v-27f43254=""
+                              data-v-2a18318c=""
+                              class="coin-coupon__wrap"
+                            >
+                              <div data-v-27f43254="" class="coin-coupon">
+                                <div
+                                  data-v-27f43254=""
+                                  class="coin-coupon__content"
+                                  style="
+                                    color: rgb(255, 255, 255);
+                                    background: url('https://p0.meituan.net/travelcube/c327dd7b909026161ec6e8c643993fbe6440.png')
+                                      0% 0% / 100% 100%;
+                                  "
+                                >
+                                  <div
+                                    data-v-27f43254=""
+                                    class="coin-coupon__count"
+                                  >
+                                    <span
+                                      data-v-27f43254=""
+                                      class="coin-coupon__money"
+                                      >￥</span
+                                    >
+                                  </div>
+                                  <div
+                                    data-v-27f43254=""
+                                    class="coin-coupon__desc"
+                                  >
+                                    现金
+                                  </div>
+                                </div>
+                                <div
+                                  data-v-27f43254=""
+                                  class="coin-coupon__amount"
+                                >
+                                  <img
+                                    data-v-27f43254=""
+                                    src="https://p0.meituan.net/travelcube/dc42765e1e9a9d66f3833402939008031011.png"
+                                    alt=""
+                                  />
+                                </div>
+                                <div
+                                  data-v-27f43254=""
+                                  class="coin-coupon__button"
+                                >
+                                  兑换
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              data-v-27f43254=""
+                              data-v-2a18318c=""
+                              class="coin-coupon__wrap"
+                            >
+                              <div data-v-27f43254="" class="coin-coupon">
+                                <div
+                                  data-v-27f43254=""
+                                  class="coin-coupon__content"
+                                  style="
+                                    color: rgb(255, 255, 255);
+                                    background: url('https://p0.meituan.net/travelcube/c327dd7b909026161ec6e8c643993fbe6440.png')
+                                      0% 0% / 100% 100%;
+                                  "
+                                >
+                                  <div
+                                    data-v-27f43254=""
+                                    class="coin-coupon__count"
+                                  >
+                                    <span
+                                      data-v-27f43254=""
+                                      class="coin-coupon__money"
+                                      >￥</span
+                                    >
+                                  </div>
+                                  <div
+                                    data-v-27f43254=""
+                                    class="coin-coupon__desc"
+                                  >
+                                    现金
+                                  </div>
+                                </div>
+                                <div
+                                  data-v-27f43254=""
+                                  class="coin-coupon__amount"
+                                >
+                                  <img
+                                    data-v-27f43254=""
+                                    src="https://p0.meituan.net/travelcube/dc42765e1e9a9d66f3833402939008031011.png"
+                                    alt=""
+                                  />
+                                </div>
+                                <div
+                                  data-v-27f43254=""
+                                  class="coin-coupon__button"
+                                >
+                                  兑换
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div data-v-2a18318c="" class="outer">
+                          <div data-v-2a18318c="" class="right">
+                            <div
+                              data-v-27f43254=""
+                              data-v-2a18318c=""
+                              class="coin-coupon__wrap"
+                            >
+                              <div data-v-27f43254="" class="coin-coupon">
+                                <div
+                                  data-v-27f43254=""
+                                  class="coin-coupon__content"
+                                  style="
+                                    color: rgb(144, 0, 0);
+                                    background: url('https://p0.meituan.net/travelcube/75710955d7b78672108699827d896ba63147.png')
+                                      0% 0% / 100% 100%;
+                                  "
+                                >
+                                  <div
+                                    data-v-27f43254=""
+                                    class="coin-coupon__count"
+                                  >
+                                    <span
+                                      data-v-27f43254=""
+                                      class="coin-coupon__money"
+                                      >￥</span
+                                    >
+                                  </div>
+                                  <div
+                                    data-v-27f43254=""
+                                    class="coin-coupon__desc"
+                                  >
+                                    现金券
+                                  </div>
+                                </div>
+                                <div
+                                  data-v-27f43254=""
+                                  class="coin-coupon__amount"
+                                >
+                                  <img
+                                    data-v-27f43254=""
+                                    src="https://p0.meituan.net/travelcube/dc42765e1e9a9d66f3833402939008031011.png"
+                                    alt=""
+                                  />
+                                </div>
+                                <div
+                                  data-v-27f43254=""
+                                  class="coin-coupon__button"
+                                >
+                                  兑换
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              data-v-27f43254=""
+                              data-v-2a18318c=""
+                              class="coin-coupon__wrap"
+                            >
+                              <div data-v-27f43254="" class="coin-coupon">
+                                <div
+                                  data-v-27f43254=""
+                                  class="coin-coupon__content"
+                                  style="
+                                    color: rgb(144, 0, 0);
+                                    background: url('https://p0.meituan.net/travelcube/75710955d7b78672108699827d896ba63147.png')
+                                      0% 0% / 100% 100%;
+                                  "
+                                >
+                                  <div
+                                    data-v-27f43254=""
+                                    class="coin-coupon__count"
+                                  >
+                                    <span
+                                      data-v-27f43254=""
+                                      class="coin-coupon__money"
+                                      >￥</span
+                                    >
+                                  </div>
+                                  <div
+                                    data-v-27f43254=""
+                                    class="coin-coupon__desc"
+                                  >
+                                    现金券
+                                  </div>
+                                </div>
+                                <div
+                                  data-v-27f43254=""
+                                  class="coin-coupon__amount"
+                                >
+                                  <img
+                                    data-v-27f43254=""
+                                    src="https://p0.meituan.net/travelcube/dc42765e1e9a9d66f3833402939008031011.png"
+                                    alt=""
+                                  />
+                                </div>
+                                <div
+                                  data-v-27f43254=""
+                                  class="coin-coupon__button"
+                                >
+                                  兑换
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              data-v-27f43254=""
+                              data-v-2a18318c=""
+                              class="coin-coupon__wrap"
+                            >
+                              <div data-v-27f43254="" class="coin-coupon">
+                                <div
+                                  data-v-27f43254=""
+                                  class="coin-coupon__content"
+                                  style="
+                                    color: rgb(144, 0, 0);
+                                    background: url('https://p0.meituan.net/travelcube/75710955d7b78672108699827d896ba63147.png')
+                                      0% 0% / 100% 100%;
+                                  "
+                                >
+                                  <div
+                                    data-v-27f43254=""
+                                    class="coin-coupon__count"
+                                  >
+                                    <span
+                                      data-v-27f43254=""
+                                      class="coin-coupon__money"
+                                      >￥</span
+                                    >
+                                  </div>
+                                  <div
+                                    data-v-27f43254=""
+                                    class="coin-coupon__desc"
+                                  >
+                                    现金券
+                                  </div>
+                                </div>
+                                <div
+                                  data-v-27f43254=""
+                                  class="coin-coupon__amount"
+                                >
+                                  <img
+                                    data-v-27f43254=""
+                                    src="https://p0.meituan.net/travelcube/dc42765e1e9a9d66f3833402939008031011.png"
+                                    alt=""
+                                  />
+                                </div>
+                                <div
+                                  data-v-27f43254=""
+                                  class="coin-coupon__button"
+                                >
+                                  兑换
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              data-v-27f43254=""
+                              data-v-2a18318c=""
+                              class="coin-coupon__wrap"
+                            >
+                              <div data-v-27f43254="" class="coin-coupon">
+                                <div
+                                  data-v-27f43254=""
+                                  class="coin-coupon__content"
+                                  style="
+                                    color: rgb(144, 0, 0);
+                                    background: url('https://p0.meituan.net/travelcube/75710955d7b78672108699827d896ba63147.png')
+                                      0% 0% / 100% 100%;
+                                  "
+                                >
+                                  <div
+                                    data-v-27f43254=""
+                                    class="coin-coupon__count"
+                                  >
+                                    <span
+                                      data-v-27f43254=""
+                                      class="coin-coupon__money"
+                                      >￥</span
+                                    >
+                                  </div>
+                                  <div
+                                    data-v-27f43254=""
+                                    class="coin-coupon__desc"
+                                  >
+                                    现金券
+                                  </div>
+                                </div>
+                                <div
+                                  data-v-27f43254=""
+                                  class="coin-coupon__amount"
+                                >
+                                  <img
+                                    data-v-27f43254=""
+                                    src="https://p0.meituan.net/travelcube/dc42765e1e9a9d66f3833402939008031011.png"
+                                    alt=""
+                                  />
+                                </div>
+                                <div
+                                  data-v-27f43254=""
+                                  class="coin-coupon__button"
+                                >
+                                  兑换
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!---->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div data-v-2a18318c="" class="coin-area__content">
+                  <div
+                    data-v-2027f413=""
+                    data-v-2a18318c=""
+                    class="gamble-entrance"
+                  >
+                    <div data-v-2027f413="" class="gamble-entrance__title">
+                      金币抽奖
+                    </div>
+                    <div data-v-2027f413="" class="gamble-entrance__subtitle">
+                      <span data-v-2027f413="">点击查看全部奖品</span>
+                      <img
+                        data-v-2027f413=""
+                        src="https://p0.meituan.net/travelcube/e7f64eb67dc5d50faf82d0b34ed3d441234.png"
+                        alt=""
+                      />
+                    </div>
+                    <div data-v-2027f413="" class="gamble-entrance__exhibition">
+                      <div data-v-ea73e9d6="" data-v-2027f413="">
+                        <div
+                          data-v-ea73e9d6=""
+                          class="gamble-item gamble-item--horizontal"
+                        >
+                          <div data-v-ea73e9d6="" class="gamble-item__img">
+                            <img
+                              data-v-ea73e9d6=""
+                              src="https://p0.meituan.net/travelcube/c3c31d1727b045d3a022cebdd323f89018612.jpg"
+                              alt=""
+                            />
+                            <!---->
+                          </div>
+                          <!---->
+                          <div data-v-ea73e9d6="" class="gamble-item__coin">
+                            <img
+                              data-v-ea73e9d6=""
+                              src="https://p0.meituan.net/travelcube/dc42765e1e9a9d66f3833402939008031011.png"
+                              alt=""
+                            />
+                            <span data-v-ea73e9d6="">10</span>
+                          </div>
+                          <div
+                            data-v-ea73e9d6=""
+                            class="
+                              gamble-item__button gamble-item__button--normal
+                            "
+                          >
+                            <div data-v-ea73e9d6="">去抽奖</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div data-v-ea73e9d6="" data-v-2027f413="">
+                        <div
+                          data-v-ea73e9d6=""
+                          class="gamble-item gamble-item--horizontal"
+                        >
+                          <div data-v-ea73e9d6="" class="gamble-item__img">
+                            <!---->
+                          </div>
+                          <!---->
+                          <div data-v-ea73e9d6="" class="gamble-item__coin">
+                            <img
+                              data-v-ea73e9d6=""
+                              src="https://p0.meituan.net/travelcube/dc42765e1e9a9d66f3833402939008031011.png"
+                              alt=""
+                            />
+                            <span data-v-ea73e9d6="">2</span>
+                          </div>
+                          <div
+                            data-v-ea73e9d6=""
+                            class="
+                              gamble-item__button gamble-item__button--normal
+                            "
+                          >
+                            <div data-v-ea73e9d6="">去抽奖</div>
+                          </div>
+                        </div>
+                      </div>
+                      <img
+                        data-v-2027f413=""
+                        src="https://p1.meituan.net/travelcube/e892edce8910dc5a41dccf6400dc5c6a3890.png"
+                        alt=""
+                        class="bubble"
+                        style=""
+                      />
+                      <!---->
+                      <!---->
+                      <!---->
+                      <!---->
+                      <!---->
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div data-v-2a18318c="" class="coin-area__ft">
+                <!---->
+                <!---->
+                <!---->
+                <!---->
+                <!---->
+                <!---->
+              </div>
+            </div>
+            <div
+              data-v-43f9dada=""
+              data-v-55b16ee6=""
+              style="height: 0.18rem"
+            ></div>
+            <div data-v-55b16ee6="">
+              <div data-v-55b16ee6="" class="coupon__wrapper" style="">
+                <div class="coupon__content">
+                  <div class="coupon__title">
+                    抢券赚钱
+                    <span class="coupon__subtitle"> 每天中午11:00开抢 </span>
+                  </div>
+                  <div class="coupons">
+                    <div
+                      data-v-0abc53c7=""
+                      class="coupon"
+                      style="margin-left: 0rem"
+                    ></div>
+                    <div
+                      data-v-0abc53c7=""
+                      class="coupon"
+                      style="margin-left: 0.12rem"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              data-v-43f9dada=""
+              data-v-55b16ee6=""
+              style="height: 0.18rem"
+            ></div>
+            <div data-v-55b16ee6="" class="earn__container">
+              <div data-v-55b16ee6="" class="earn__wrapper">
+                <div data-v-55b16ee6="" class="earn__content">
+                  <div class="earn__title">边玩边赚</div>
+                  <div class="earn__list" style="">
+                    <div id="176894" class="earn__block">
+                      <div class="earn__img">
+                        <div data-v-0755526e="" class="image-wrap">
+                          <img
+                            data-v-0755526e=""
+                            src="https://p0.meituan.net/linglong/18e164e500c04b30ba9a52907b6eaa6110229.jpg@83w_83h"
+                            alt=""
+                            class="image"
+                          />
+                        </div>
+                      </div>
+                      <div class="earn__text">免单红包</div>
+                    </div>
+                    <div id="175337" class="earn__block">
+                      <div class="earn__img">
+                        <div data-v-0755526e="" class="image-wrap">
+                          <img
+                            data-v-0755526e=""
+                            src="https://p0.meituan.net/linglong/ab1ec612babc81180a652bda08053e8e18952.jpg@83w_83h"
+                            alt=""
+                            class="image"
+                          />
+                        </div>
+                      </div>
+                      <div class="earn__text">全民种红包</div>
+                    </div>
+                    <div id="175335" class="earn__block">
+                      <div class="earn__img">
+                        <div data-v-0755526e="" class="image-wrap">
+                          <img
+                            data-v-0755526e=""
+                            src="https://p1.meituan.net/linglong/c9f6e1acfb43a4162f165af5ab4823604364.jpg@83w_83h"
+                            alt=""
+                            class="image"
+                          />
+                        </div>
+                      </div>
+                      <div class="earn__text">免费领水果</div>
+                    </div>
+                    <div id="175333" class="earn__block">
+                      <div class="earn__img">
+                        <div data-v-0755526e="" class="image-wrap">
+                          <img
+                            data-v-0755526e=""
+                            src="https://p0.meituan.net/linglong/eaed40ffa527a2c2285745aef50b57773561.jpg@83w_83h"
+                            alt=""
+                            class="image"
+                          />
+                        </div>
+                      </div>
+                      <div class="earn__text">1分领好货</div>
+                    </div>
+                    <div id="175330" class="earn__block">
+                      <div class="earn__img">
+                        <div data-v-0755526e="" class="image-wrap">
+                          <img
+                            data-v-0755526e=""
+                            src="https://p1.meituan.net/linglong/cbcc92d3daffe45d674707af970677f57495.png@83w_83h"
+                            alt=""
+                            class="image"
+                          />
+                        </div>
+                      </div>
+                      <div class="earn__text">打牌领现金</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              data-v-43f9dada=""
+              data-v-55b16ee6=""
+              style="height: 0.36rem"
+            ></div>
+          </div>
+          <div
+            data-v-55b16ee6=""
+            id="save"
+            href="#save-area"
+            class="save-area__title"
+          >
+            <div data-v-55b16ee6="" class="image">
+              <img
+                data-v-55b16ee6=""
+                src="https://p0.meituan.net/travelcube/6a90365e71937ed038e14fc9c98eef974705.png"
+                alt=""
+              />
+            </div>
+            <div data-v-55b16ee6="" class="save-area__subtitle">
+              天天帮您找优惠
+            </div>
+          </div>
+          <div data-v-55b16ee6="" class="color">
+            <div data-v-55b16ee6="" class="left"></div>
+            <div data-v-55b16ee6="" class="right"></div>
+          </div>
+          <div data-v-55b16ee6="" class="save-area__wrapper">
+            <div data-v-55b16ee6="" class="save-area__container">
+              <div data-v-55b16ee6="" class="save-area__content">
+                <div data-v-55b16ee6="" class="banner__container">
+                  <div class="banner-first">
+                    <div index="0" id="182171" class="banner-first__item">
+                      
+                    </div>
+                    <div index="1" id="181119" class="banner-first__item">
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+          <!---->
+          <!---->
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
