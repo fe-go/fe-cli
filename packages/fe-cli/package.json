@@ -1,6 +1,6 @@
 {
   "name": "@fe-go/fe-cli",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "前端工具集 cli ",
   "main": "index.js",
   "bin": {
