@@ -17,7 +17,7 @@ program
   .option('--code', '使用 vscode 展示 diff')
   .option('-S, --small', 'small qrcode size')
 // .option('-p, --packages [value]', '新生成monorepo组件')
-// .option('--type <string>', '编译类型 dev,build,prepub,publish,test')
+// .option('--type <string>', '编译类型 dev,build,prepub,publish,test')
 
 program
   .command('hls <src> <outdir>')
@@ -30,13 +30,14 @@ program
 program
   .command('diff <file1> <file2>')
   .description('展示文件 diff')
-  .option('--code, --diff_mode <mode>', '通过 vscode 展示 DIFF', false)
+  .option('--code, --diff_mode <mode>', '通过 vscode 展示 DIFF', true)
   .action(async (one, other) => {
     require('./script/diff')(one, other, program.opts())
   })
 
 program
-  .command('qr <url>')
+  .command('qrcode <url>')
+  .alias('qr')
   .description('generate qrcode')
   .action((url) => {
     require('./script/qrcode')(url, program.opts())
@@ -45,6 +46,7 @@ program
 // get local public IP address
 program
   .command('IP')
+  .alias('ip')
   .description('get local public IP address')
   .action(() => {
     console.log(require('./script/ipAddress')())
@@ -52,15 +54,14 @@ program
 
 program
   .command('iconfont <src> [dest]')
-  .description(
-    '去掉iconfont中冗余的引用资源,将需要引用的 .ttf 资源自动转化为 base64,简化 iconfont 引入方式。'
-  )
+  .description('去掉iconfont中冗余的引用资源,将需要引用的 .ttf 资源自动转化为 base64,简化 iconfont 引入方式。')
   .action((src, dest = '.') => {
     require('./script/iconfont')(src, dest, program.opts())
   })
 
 program
   .command('tinypng <src> [dest]')
+  .alias('ty')
   .description('压缩指定目录下的 .png .jpg .jpeg 文件')
   .action((src, dest = '.') => {
     require('./script/tinypng')(src, dest, program.opts())
@@ -74,6 +75,7 @@ program.on('--help', function () {
   console.log('  $ fe hls xxx.mp4 outdir')
   console.log('  $ fe qr URL')
   console.log('  $ fe qr URL -S/--small')
+  console.log('  $ fe ty images outdir')
   console.log('  $ fe tinypng images outdir')
   console.log('  $ fe tinypng images')
   console.log('  $ fe tinypng xx.png outdir')
