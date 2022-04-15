@@ -589,6 +589,11 @@ pupa@^2.1.1:
   dependencies:
     escape-goat "^2.0.0"
 
+qrcode-terminal@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.npmmirror.com/qrcode-terminal/-/qrcode-terminal-0.12.0.tgz#bb5b699ef7f9f0505092a3748be4464fe71b5819"
+  integrity sha512-EXtzRZmC+YGmGlDFbXKxQiMZNwCLEO6BANKXG4iCtSIM0yqc/pappSx3RIKr4r0uh5JsBckOXeKrB3Iz7mdQpQ==
+
 rc@^1.2.8:
   version "1.2.8"
   resolved "http://r.npm.sankuai.com/rc/download/rc-1.2.8.tgz#cd924bf5200a075b83c188cd6b9e211b7fc0d3ed"
