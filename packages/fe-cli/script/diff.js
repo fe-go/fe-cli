@@ -1,9 +1,7 @@
-const { green, red } = require('../lib/color')
+const { green, blue, red } = require('../lib/color')
 const fs = require('fs-extra')
 const Diff = require('diff')
 const exec = require('child_process').execSync
-const { blue } = require('colors')
-
 function diffFile(one, other) {
   const f1 = fs.readFileSync(one).toString()
   const f2 = fs.readFileSync(other).toString()
