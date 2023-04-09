@@ -24,7 +24,7 @@ program
     .description('视频切片')
     .action(async (src, outdir, time = 2) => {
         console.log(src, outdir)
-        require('./script/hls')(src, outdir, time)
+        await require('./script/hls')(src, outdir, time)
     })
 
 program

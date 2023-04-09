@@ -1,40 +1,41 @@
 {
-  "name": "@fe-go/fe-cli",
-  "version": "1.1.1",
-  "description": "前端工具集 cli ",
-  "main": "index.js",
-  "bin": {
-    "fe": "cli.js"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/advence-liz/fe-cli.git"
-  },
-  "keywords": [
-    "fe",
-    "fed",
-    "tool",
-    "cli"
-  ],
-  "author": "advence-liz",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/advence-liz/fe-cli/issues"
-  },
-  "homepage": "https://github.com/advence-liz/fe-cli#readme",
-  "dependencies": {
-    "commander": "^7.2.0",
-    "diff": "^5.0.0",
-    "fluent-ffmpeg": "^2.1.2",
-    "fs-extra": "^10.0.0",
-    "lodash": "^4.17.21",
-    "mime-types": "^2.1.31",
-    "ora": "^5.4.1",
-    "qrcode-terminal": "^0.12.0",
-    "single-line-log": "^1.1.2",
-    "update-notifier": "^5.1.0"
-  }
+    "name": "@fe-go/fe-cli",
+    "version": "1.1.1",
+    "description": "前端工具集 cli ",
+    "main": "index.js",
+    "bin": {
+        "fe": "cli.js"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@github.com/advence-liz/fe-cli.git"
+    },
+    "keywords": [
+        "fe",
+        "fed",
+        "tool",
+        "cli"
+    ],
+    "author": "advence-liz",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/advence-liz/fe-cli/issues"
+    },
+    "homepage": "https://github.com/advence-liz/fe-cli#readme",
+    "dependencies": {
+        "commander": "^7.2.0",
+        "diff": "^5.0.0",
+        "fs-extra": "^10.0.0",
+        "lodash": "^4.17.21",
+        "mime-types": "^2.1.31",
+        "ora": "^5.4.1",
+        "qrcode-terminal": "^0.12.0",
+        "single-line-log": "^1.1.2",
+        "update-notifier": "^5.1.0",
+        "@ffmpeg/core": "^0.11.0",
+        "@ffmpeg/ffmpeg": "^0.11.6"
+    }
 }
