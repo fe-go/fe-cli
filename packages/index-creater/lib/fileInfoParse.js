@@ -21,13 +21,15 @@ function fileInfoParse({
         ignore: ignorePattern
     })
 
-    items = dirs.map(filePath => {
+    items = dirs.map((filePath) => {
         const name = getPascal(path.parse(filePath).name, separator)
         const relativePath = `./${path.relative(rootPath, filePath)}`
+        const parsePath = path.parse(relativePath)
+        const basePath = parsePath.dir + parsePath.name
 
         const exportTemplate = exportPattern
             .replace(/\[name\]/g, name)
-            .replace(/\[path\]/g, relativePath)
+            .replace(/\[path\]/g, basePath)
 
         return { exportTemplate, name, relativePath, filePath }
     })
@@ -36,7 +38,7 @@ function fileInfoParse({
 
 /**
  * 解析匹配的文件，并自动解析文件的export，返回整合活的文件信息
- * @param {*} param0 
+ * @param {*} param0
  */
 function fileInfoParseAutoExport({
     rootPath,
@@ -48,7 +50,7 @@ function fileInfoParseAutoExport({
         ignore: ignorePattern
     })
     const items = []
-    files.forEach(filePath => {
+    files.forEach((filePath) => {
         const pathOpt = path.parse(filePath)
         const code = fs.readFileSync(filePath, { encoding: 'utf8' })
 

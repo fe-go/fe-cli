@@ -23,25 +23,28 @@ function createIndex(options = {}) {
         exportPattern,
         suffix = 'js',
         ignore = false,
-        callback = () => {}
+        callback = () => {},
+        output
     } = options
     const rootPath = path.resolve(root)
-    const outPath = path.join(rootPath, `index.${suffix.replace(/\./g, '')}`)
+    const outPath = output
+        ? path.join(rootPath, output)
+        : path.join(rootPath, `index.${suffix.replace(/\./g, '')}`)
     let ignorePattern = []
     let items = []
     if (ignore) {
         const globs = ignore.constructor === Array ? ignore : [ignore]
-        ignorePattern = globs.map(x => path.resolve(rootPath, x))
+        ignorePattern = globs.map((x) => path.resolve(rootPath, x))
     }
 
     items = exportPattern
         ? fileInfoParse({
-            rootPath,
-            match,
-            ignorePattern,
-            separator,
-            exportPattern
-        })
+              rootPath,
+              match,
+              ignorePattern,
+              separator,
+              exportPattern
+          })
         : fileInfoParseAutoExport({ rootPath, match, ignorePattern, separator })
 
     const template = items
@@ -69,12 +72,12 @@ function createIndex(options = {}) {
  * @prop {String|Array} ignore glob pattern or glob pattern array
  * @prop {(template,items)=>String} callback 自定义回调函数,template 为引进生成的文件模板，items 匹配的文件信息，返回值为新的模板
  */
-module.exports = config => {
+module.exports = (config) => {
     let configs = [config]
     if (config.constructor === Array) {
         configs = config
     }
-    configs.forEach(config => {
+    configs.forEach((config) => {
         createIndex(config)
     })
 }
