@@ -1,6 +1,6 @@
 {
   "name": "index-creater",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Automatic index generation",
   "main": "index.js",
   "scripts": {
