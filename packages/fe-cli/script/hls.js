@@ -12,7 +12,7 @@ const ffmpeg = createFFmpeg({
     log: true
 })
 
-module.exports = async (src, dist, time) => {
+module.exports = async (src, dist, time=2) => {
     fs.ensureDirSync(path.resolve(dist))
     const sourcePath = path.resolve(src)
     // 当文件名为中文是 s3 上传会失败，创建临时目录转移视频
@@ -49,7 +49,7 @@ module.exports = async (src, dist, time) => {
         '-hls_list_size',
         '0',
         '-hls_time',
-        '2',
+        String(time),
         '-force_key_frames',
         'expr:gte(t,n_forced*1)',
         'output.m3u8' // mem target
@@ -65,6 +65,10 @@ module.exports = async (src, dist, time) => {
         .filter((p) => p.endsWith('.ts'))
         .forEach(async (p) => {
             console.log(p)
+            await fs.promises.writeFile(
+                path.join(outputPath, p),
+                ffmpeg.FS('readFile', p)
+            )
             // await fs.writeFileSync(outputPath, ffmpeg.FS('readFile', p))
         })
     spinner.succeed(green(`${src} file has been converted succesfully`))
