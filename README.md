@@ -6,10 +6,12 @@
 简体中文 ｜ [English](./README-en_US.md)
 
 [目录](#fe-cli)
+- [fe-cli](#fe-cli)
   - [安装](#安装)
   - [视频切片](#视频切片)
   - [图片压缩](#图片压缩)
   - [展示文件diff](#展示文件diff)
+  - [iconfont 转化](#iconfont-转化)
   - [获取本机IP](#获取本机ip)
   - [URL转qrcode](#url转qrcode)
 
@@ -22,9 +24,10 @@
 
 了解更多看这里[视频秒开操作指南](https://juejin.cn/post/6979223117415579656)
 
-前提本机需要安装 ffmpeg （70多M实在难以内置） 推荐通过 homebrew 安装 
-- 安装 homebrew `$ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
-- 安装 ffmpeg `$ brew install ffmpeg`
+v1.1.3 版本后基于wasm 实现已经不需要安装 ffmpeg 了!
+~~前提本机需要安装 ffmpeg （70多M实在难以内置） 推荐通过 homebrew 安装~~ 
+~~ - 安装 homebrew `$ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` ~~
+~~ - 安装 ffmpeg `$ brew install ffmpeg` ~~
 
 `fe hls <file.mp4> <outdir>`
 

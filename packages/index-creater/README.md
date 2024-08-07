@@ -34,7 +34,7 @@ export { default as GrandsonNest, IGrandsonNestProps } from "./nest/child-nest/g
 ## 安装
 
 ```bash
-$ npm install index-creater
+$ npm install index-render
 ```
 
 ## code example
