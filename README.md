@@ -25,14 +25,16 @@
 了解更多看这里[视频秒开操作指南](https://juejin.cn/post/6979223117415579656)
 
 v1.1.3 版本后基于wasm 实现已经不需要安装 ffmpeg 了!
-~~前提本机需要安装 ffmpeg （70多M实在难以内置） 推荐通过 homebrew 安装~~ 
-~~ - 安装 homebrew `$ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` ~~
-~~ - 安装 ffmpeg `$ brew install ffmpeg` ~~
 
-`fe hls <file.mp4> <outdir>`
+~~前提本机需要安装 ffmpeg （70多M实在难以内置） 推荐通过 homebrew 安装~~ 
+- ~~安装 homebrew `$ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`~~
+- ~~安装 ffmpeg `$ brew install ffmpeg`~~
+
+`fe hls <file.mp4> <outdir> [time]`
 
 * `file.mp4` 切片的mp4文件
 * `outdir` 输出路径
+* `time` 切片时间
 
 示例:
 
